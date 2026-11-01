@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "bigram-table-scan",
+  "task": "008",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "numba"
+  ],
+  "description": "Hashes every using value once against dictionaries of the master values; sorts eligible using records into (state, city) blocks; encodes each block's bigrams once with inverted lists, so a master record's bigram counts are sums over its own bigrams' lists; evaluates reclink2's comparator, weights and float32 rounding operation by operation, vectorized over chunks of candidates; single-threaded Numba."
+}

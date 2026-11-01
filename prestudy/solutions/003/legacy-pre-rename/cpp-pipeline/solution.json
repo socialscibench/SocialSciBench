@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "cpp-pipeline",
+  "task": "008",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py",
+    "linkage.cpp"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "Apple clang 17 (external, compiles linkage.cpp at import)"
+  ],
+  "description": "the 14 Oct 2026 study's complete C++17 pipeline (linkage.cpp, unchanged; AppleClang -O3 -ffp-contract=off -fno-fast-math, compiled at import), ctypes bridge as its native.py, one thread"
+}

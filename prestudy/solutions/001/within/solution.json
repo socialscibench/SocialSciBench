@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "within",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "scipy",
+    "within-py==0.4.0"
+  ],
+  "description": "within-py 0.4.0 (Rust) batched demeaning with default LSMR options, plus label encoding, singleton pruning, OLS, clustered covariance and the task's df rule, as in the 14 Oct 2026 study."
+}

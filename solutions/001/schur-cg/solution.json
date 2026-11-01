@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "name": "schur-cg",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy==2.3.5",
+    "numba==0.62.1"
+  ],
+  "description": "Exact elimination of the largest fixed effect; preconditioned conjugate gradients on the reduced normal equations for y and all regressors together, with an approximate Cholesky factorization of each large sparse fixed-effect block's Laplacian (Kyng-Sachdeva/AC sampling) and dense exact small blocks; reghdfe df_a conventions. Threads: NUMBA_NUM_THREADS and BLAS."
+}

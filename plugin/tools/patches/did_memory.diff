@@ -1,0 +1,127 @@
+--- frozen/solutions/002/cell-lean/solution.py
++++ engine/core/did_memory.py
+@@ -1,8 +1,12 @@
++# turbo-socialsci core: the frozen SocialSciBench candidate solutions/002/cell-lean (freeze of 2026-10-26)
++# with the plugin's changes (plugin/README.md; diff: plugin/tools/patches/did_memory.diff).
+ """Task 002 candidate "cell-lean" (combined task of 2026-10-25): the computation of the "cell-fused"
+ candidate (Callaway & Sant'Anna 2021 staggered DiD as reference.run computes it under csdid 1.81's
+ or 2.0.1's rules, with every option of the task) written for a small peak memory: NumPy only (no
+ JIT compiler in the process), bounded working arrays, and no n_units x n_aggregates or
+-n_units x n_cells arrays.
++n_units x n_cells arrays. (turbo-socialsci 0.2: with multipliers drawn inside the call, the
++bootstrap's sums come from core/_signs.py's compiled kernel, which loads the JIT's runtime, about
++65 MB, and is many times faster than drawing the multipliers as floating-point matrices.)
+ 
+ 1. Cells and their sizes (cohort tallies on balanced panels, masks otherwise).
+ 2. Estimation, one cohort at a time, its cells in order: csdid 2.0.1's overlap check, the
+@@ -29,6 +33,9 @@
+ from statistics import NormalDist
+ 
+ import numpy as np
++
++from ._draws import n_words, rademacher, seed_key
++from ._signs import signed_sums
+ 
+ CAP = 1.0 - 1e-6             # drdid caps the propensity score below 1
+ TOL = 1e-10                  # the reference's Newton stopping rule (largest step)
+@@ -583,7 +590,10 @@
+ # ----------------------------------------------------------------------------------------------
+ 
+ def run(y, X, gvar, w=None, control="never", method="dripw", event_window=(-5, 5),
+-        base_period="varying", trim=1.0, boot_weights=None, alpha=0.05, event_sets=None, rules="csdid181"):
++        base_period="varying", trim=1.0, boot_weights=None, alpha=0.05, event_sets=None, rules="csdid181",
++        n_boot=None, seed=1, boot_tables=None):
++    if boot_weights is not None and n_boot is not None:
++        raise ValueError("give either boot_weights or n_boot, not both")
+     if control not in ("never", "notyet"):
+         raise ValueError("control must be 'never' or 'notyet'")
+     if method not in METHODS:
+@@ -722,10 +732,12 @@
+         EX[c][idx] = r - a[c]
+ 
+     # 3./4. pass over units in blocks of one cohort value; bootstrap tiles of cells and draws
+-    boot = boot_weights is not None
+-    v = np.asarray(boot_weights) if boot else None
+-    Bd = v.shape[1] if boot else 0
++    boot = boot_weights is not None or n_boot is not None
++    v = np.asarray(boot_weights) if boot_weights is not None else None
++    Bd = (v.shape[1] if v is not None else int(n_boot)) if boot else 0
+     rows_all = np.flatnonzero(units) if boot else None
++    if boot and v is None:                              # multipliers drawn here (plugin addition)
++        key, nwords = seed_key(seed), n_words(Bd)
+     order = np.argsort(gvar, kind="stable")
+     vals, starts, counts = np.unique(gvar[order], return_index=True, return_counts=True)
+     per_cell = boot and not (r201 or balanced)
+@@ -791,12 +803,38 @@
+                     Gram += E.T @ E
+                     Esum += E.sum(0)
+                     del E
+-                if boot:
+-                    vb = v[rows_all[ub]]
++                if boot and v is None:
++                    # plugin addition (0.2): the drawn multipliers' sums by tables of signed sums
++                    # (core/_signs.py), all draws at once: the cells' columns, then the ones and the
++                    # weight columns on the first pass
++                    parts = [dev[:, sel] * inv_n] if sel.size else []
++                    if first:
++                        parts.append(np.ones((ub.size, 1)))
++                        if gi >= 0 and not per_cell:
++                            parts.append(wb[:, None])
++                        elif gi >= 0 and own.size:
++                            parts.append(wb[:, None] * mem[:, own])
++                    if parts:
++                        prod = signed_sums(np.hstack(parts), rows_all[ub], key, nwords, Bd)
++                        k0 = sel.size
++                        if sel.size:
++                            Ggt[trow] += prod[:k0]
++                        if first:
++                            Gones += prod[k0]
++                            if gi >= 0 and not per_cell:
++                                WVg[gi] += prod[k0 + 1]
++                            elif gi >= 0 and own.size:
++                                WVc[members[own]] += prod[k0 + 1:k0 + 1 + own.size]
++                        del prod
++                elif boot:
++                    vb = v[rows_all[ub]] if v is not None else None
+                     dt = dev[:, sel] * inv_n if sel.size else None
+                     piece = max(1, DRAWS // max(ub.size, sel.size, 1))
+                     for c0 in range(0, Bd, piece):            # draws in pieces of bounded size
+-                        vf = vb[:, c0:c0 + piece].astype(np.float64)
++                        if vb is not None:
++                            vf = vb[:, c0:c0 + piece].astype(np.float64)
++                        else:
++                            vf = rademacher(key, rows_all[ub], nwords, c0, min(Bd, c0 + piece))
+                         c1 = c0 + vf.shape[1]
+                         if first:
+                             Gones[c0:c1] += vf.sum(0)
+@@ -908,8 +946,30 @@
+             se_b = _se_boot(Dr, rules)
+             out[f"se_boot_{name}"] = se_b
+             out[f"crit_{name}"] = _crit(_tmax_update(np.zeros(Bd), Dr, se_b), alpha, True, rules)
++        # plugin addition: the event-study critical value over the event times with Pre_avg and
++        # Post_avg (the rows of csdid 1.81's estat event table)
++        Dr = np.vstack([Dagg[esel]] + [c @ Dagg for c, has in ((c_pre, pre.any()), (c_post, pst.any())) if has])
++        tm = _tmax_update(np.zeros(Bd), Dr, _se_boot(Dr, rules))
++        out["crit_event_with_avgs"] = (_crit(tm, alpha, True, rules) if np.isfinite(tm).any()
++                                       else float("nan"))
+         c_simple = unit(0)
+         for name, coef in (("simple", c_simple), ("group_avg", c_ga), ("calendar_avg", c_cal),
+                            ("pre_avg", c_pre if pre.any() else None), ("post_avg", c_post if pst.any() else None)):
+             out[f"se_boot_{name}"] = (np.nan if coef is None else float(_se_boot((coef @ Dagg)[None, :], rules)[0]))
++        if boot_tables is not None:                      # plugin addition (0.2): the tables asked for
++            _mask_tables(out, tuple(boot_tables))
+     return out
++
++
++def _mask_tables(out, want):
++    """NaN for the bootstrap results of tables not in want (as the speed core leaves them)."""
++    for name in ("gt", "event", "group", "calendar"):
++        if name not in want:
++            out[f"se_boot_{name}"] = np.full(np.asarray(out[f"se_boot_{name}"]).shape, np.nan)
++            out[f"crit_{name}"] = float("nan")
++    gone = dict(group_avg="group", calendar_avg="calendar", pre_avg="event", post_avg="event")
++    for name, table in gone.items():
++        if table not in want:
++            out[f"se_boot_{name}"] = np.nan
++    if "event" not in want:
++        out["crit_event_with_avgs"] = float("nan")

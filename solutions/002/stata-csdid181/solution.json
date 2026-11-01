@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "name": "stata-csdid181",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "build.md",
+    "revision.diff",
+    "diagnosis-108/diag108.py",
+    "diagnosis-108/diag108b.py",
+    "diagnosis-108/diag108.out",
+    "diagnosis-108/diag108b.out"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "Stata 18 MP (pystata)",
+    "csdid 1.82 and drdid 1.91 (SSC; github.com/friosavila/stpackages)",
+    "pandas"
+  ],
+  "description": "Baseline: Stata csdid 1.82 with drdid 1.91 via pystata for the task's csdid181-rule workloads (method, notyet, long2 for the universal base with the event window moved one period on the pre-treatment side to offset 1.82's long2 event pairing, pscoretrim; one estimation for the estimates and influence-function SEs, saving the RIFs with saverif(); with multipliers, csdid_stats attgt/simple/group/calendar/event with wboot(reps(B) wbtype(rademacher)) for the bootstrap with Stata's own multipliers)."
+}

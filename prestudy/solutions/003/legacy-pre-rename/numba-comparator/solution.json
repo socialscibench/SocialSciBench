@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "numba-comparator",
+  "task": "008",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "scipy",
+    "pandas",
+    "numba"
+  ],
+  "description": "the 14 Oct 2026 study's record_numba_full: a copy of the reference pipeline (pandas joins, sparse bigram matrices) with bigram1 replaced by its compiled per-pair comparator"
+}

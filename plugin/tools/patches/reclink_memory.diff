@@ -1,0 +1,229 @@
+--- frozen/solutions/003/block-lean/block_lean.py
++++ engine/core/reclink_memory.py
+@@ -1,3 +1,5 @@
++# turbo-socialsci core: the frozen SocialSciBench candidate solutions/003/block-lean (freeze of 2026-10-26)
++# with the plugin's changes (plugin/README.md; diff: plugin/tools/patches/reclink_memory.diff).
+ """Task 003 candidate "block-lean": the "block-index" computation (reclink2 record linkage: perfect
+ matches, required + or-blocking, reclink's bigram comparator with the Winkler-type prefix bonus,
+ float32 match and non-match weights, every tied best candidate, as computed by reference.run),
+@@ -39,17 +41,74 @@
+ import ctypes
+ import ctypes.util
+ 
++import operator
++
+ import numpy as np
+ import numba as nb
+ from llvmlite import ir
+ from numba import types
+ from numba.core import cgutils
++from numba.core.extending import overload, overload_attribute
++from numba.experimental import structref
+ from numba.extending import intrinsic
+ 
+ PREFIX = 8                     # characters hashed by the using-value filter
+ FILTER_BITS = 22               # filter size (bits) for long variables
+ CHUNK = 128                    # candidates per vectorized scoring chunk
+ U64 = np.uint64
++
++
++# ----------------------------------------------------------------------------------------------
++# Variable-length rows (turbo-socialsci 0.2): the using file's strings read in place, from Arrow's
++# characters and offsets, instead of a fixed-width copy (rows as wide as the longest value). A[r, k]
++# and A.shape behave as for the 2-D arrays: characters past a value's length read as NUL.
++# ----------------------------------------------------------------------------------------------
++
++@structref.register
++class VarRowsType(types.StructRef):
++    def preprocess_fields(self, fields):
++        return tuple((name, types.unliteral(typ)) for name, typ in fields)
++
++
++class VarRows(structref.StructRefProxy):
++    """Strings as characters (uint8 array), offsets (int32, one more than the values) and the
++    longest length."""
++    def __new__(cls, data, off, width):
++        return structref.StructRefProxy.__new__(cls, data, off, width)
++
++    def __len__(self):
++        return _rows_shape_of(self)[0]
++
++    @property
++    def shape(self):
++        return _rows_shape_of(self)
++
++
++structref.define_proxy(VarRows, VarRowsType, ["data", "off", "width"])
++
++
++@nb.njit(cache=True)
++def _rows_shape_of(a):
++    return (a.off.size - 1, a.width)
++
++
++@overload(operator.getitem, inline="always")
++def _rows_getitem(a, idx):
++    if isinstance(a, VarRowsType) and isinstance(idx, types.BaseTuple) and len(idx) == 2:
++        def impl(a, idx):
++            r, k = idx
++            s = a.off[r]
++            if k < a.off[r + 1] - s:
++                return a.data[s + k]
++            return np.uint8(0)
++        return impl
++
++
++@overload_attribute(VarRowsType, "shape")
++def _rows_shape(a):
++    def get(a):
++        return (a.off.size - 1, a.width)
++    return get
+ 
+ 
+ # ----------------------------------------------------------------------------------------------
+@@ -229,7 +288,7 @@
+             cnt[key[i] + 1] += 1
+     for k in range(nkeys):
+         cnt[k + 1] += cnt[k]
+-    out = np.empty(cnt[nkeys], np.int64)
++    out = np.empty(cnt[nkeys], np.int32)         # record numbers (turbo-socialsci 0.2: 32 bits)
+     pos = cnt[:-1].copy()
+     for i in range(key.size):
+         if key[i] >= 0 and not skip[i]:
+@@ -286,21 +345,43 @@
+ DIRECT_MAX = 3                # blocks with fewer master records are counted without inverted lists
+ 
+ 
++def _prefetch_at(context, builder, aryty, ary_value, index):
++    ary = context.make_array(aryty)(context, builder, ary_value)
++    ptr = cgutils.get_item_pointer(context, builder, aryty, ary, index)
++    i8p = ir.IntType(8).as_pointer()
++    fnty = ir.FunctionType(ir.VoidType(), [i8p, ir.IntType(32), ir.IntType(32), ir.IntType(32)])
++    fn = cgutils.get_or_insert_function(builder.module, fnty, "llvm.prefetch.p0i8")
++    i32 = ir.IntType(32)
++    builder.call(fn, [builder.bitcast(ptr, i8p), ir.Constant(i32, 0), ir.Constant(i32, 3), ir.Constant(i32, 1)])
++    return context.get_dummy_value()
++
++
+ @intrinsic
+-def _prefetch_row(typingctx, arr, row):
++def _prefetch_2d(typingctx, arr, row):
+     """Prefetch the start of row `row` of a C-contiguous 2-D array (llvm.prefetch)."""
+     def codegen(context, builder, sig, args):
+-        aryty = sig.args[0]
+-        ary = context.make_array(aryty)(context, builder, args[0])
+-        zero = context.get_constant(types.intp, 0)
+-        ptr = cgutils.get_item_pointer(context, builder, aryty, ary, [args[1], zero])
+-        i8p = ir.IntType(8).as_pointer()
+-        fnty = ir.FunctionType(ir.VoidType(), [i8p, ir.IntType(32), ir.IntType(32), ir.IntType(32)])
+-        fn = cgutils.get_or_insert_function(builder.module, fnty, "llvm.prefetch.p0i8")
+-        i32 = ir.IntType(32)
+-        builder.call(fn, [builder.bitcast(ptr, i8p), ir.Constant(i32, 0), ir.Constant(i32, 3), ir.Constant(i32, 1)])
+-        return context.get_dummy_value()
++        return _prefetch_at(context, builder, sig.args[0], args[0], [args[1], context.get_constant(types.intp, 0)])
+     return types.void(arr, types.intp), codegen
++
++
++@intrinsic
++def _prefetch_1d(typingctx, arr, i):
++    """Prefetch element i of a 1-D array (llvm.prefetch)."""
++    def codegen(context, builder, sig, args):
++        return _prefetch_at(context, builder, sig.args[0], args[0], [args[1]])
++    return types.void(arr, types.intp), codegen
++
++
++def _prefetch_row(arr, row):
++    """Prefetch the start of a row (2-D array or variable-length rows)."""
++
++
++@overload(_prefetch_row, inline="always")
++def _prefetch_row_impl(arr, row):
++    if isinstance(arr, types.Array):
++        return lambda arr, row: _prefetch_2d(arr, row)
++    if isinstance(arr, VarRowsType):
++        return lambda arr, row: _prefetch_1d(arr.data, arr.off[row])
+ 
+ 
+ @nb.njit(inline="always", cache=True)
+@@ -594,7 +675,7 @@
+     tots = np.zeros(ni, np.int64)
+     capl = 1024
+     lst = np.zeros((ni, capl), np.int32)
+-    codes = np.zeros(capl, np.int64)
++    codes = np.zeros(capl, np.uint16)                # bigram codes (< 2^14; turbo-socialsci 0.2: 16 bits)
+     hist = np.zeros(1 << 14, np.int64)
+     bstamp = np.full(1 << 14, -1, np.int64)
+     btag = 0
+@@ -658,9 +739,9 @@
+                 for fi in range(nidx):
+                     tmax = max(tmax, tots[fi])
+                 if tmax > capl:
+-                    capl = 2 * tmax
++                    capl = tmax + tmax // 4          # turbo-socialsci 0.2: 1.25x, not 2x
+                     lst = np.zeros((ni, capl), np.int32)
+-                    codes = np.zeros(capl, np.int64)
++                    codes = np.zeros(capl, np.uint16)
+                 for fi in range(nidx):
+                     f = idxf[fi]
+                     for q in range(nuc[fi]):
+@@ -943,6 +1024,10 @@
+ 
+ 
+ def _ucs4(a):
++    if isinstance(a, VarRows):
++        return a                       # turbo-socialsci 0.2: variable-length rows, read in place
++    if isinstance(a, np.ndarray) and a.ndim == 2 and a.dtype == np.uint8:
++        return a                       # turbo-socialsci 0.2: ASCII bytes, one NUL-padded row per value
+     a = np.ascontiguousarray(np.asarray(a, dtype=str))
+     w = max(a.dtype.itemsize // 4, 1)
+     if a.size == 0:
+@@ -979,11 +1064,20 @@
+     nvals = np.empty(nv, np.int64)
+     lens_m = []
+     for f, v in enumerate(vars):
+-        vals, inv = np.unique(np.asarray(master[v], dtype=str), return_inverse=True)
+-        Mv = _ucs4(vals)
+-        ln = _lengths_of(Mv)
+-        if Mv.size and (Mv.max() > 127 or not np.array_equal(ln, np.char.str_len(vals))):
+-            raise ValueError("master values must be ASCII strings without NUL characters")
++        mv = master[v]
++        if isinstance(mv, np.ndarray) and mv.ndim == 2 and mv.dtype == np.uint8:
++            # turbo-socialsci 0.2: ASCII bytes (checked by the caller); the distinct rows in byte
++            # order, which for ASCII is the order of the strings
++            w = mv.shape[1]
++            vals, inv = np.unique(np.ascontiguousarray(mv).view(f"S{w}").reshape(-1), return_inverse=True)
++            Mv = np.ascontiguousarray(vals).view(np.uint8).reshape(-1, w)
++            ln = _lengths_of(Mv)
++        else:
++            vals, inv = np.unique(np.asarray(mv, dtype=str), return_inverse=True)
++            Mv = _ucs4(vals)
++            ln = _lengths_of(Mv)
++            if Mv.size and (Mv.max() > 127 or not np.array_equal(ln, np.char.str_len(vals))):
++                raise ValueError("master values must be ASCII strings without NUL characters")
+         Mtup.append(Mv)
+         lens_m.append(ln)
+         mid[f] = inv.reshape(-1)
+@@ -997,8 +1091,8 @@
+     mpre = np.zeros((nv, max(int(nvals.max()), 1)), np.uint32)
+     for f in range(nv):
+         mlen[f, :nvals[f]] = lens_m[f]
+-        for v_ in range(nvals[f]):
+-            mpre[f, v_] = sum(int(Mtup[f][v_, k]) << (8 * k) for k in range(min(4, lens_m[f][v_])))
++        for k in range(min(4, Mtup[f].shape[1])):        # rows are NUL-padded past their length
++            mpre[f, :nvals[f]] |= Mtup[f][:, k].astype(np.uint32) << np.uint32(8 * k)
+     if bad[0]:
+         raise ValueError("using values must be ASCII strings")
+     _release()
+@@ -1076,7 +1170,11 @@
+             kc[f, :kcnts[f].size] = kcnts[f]
+             parts.append(krec_list[f])
+             pos += krec_list[f].size
+-    krecs_all = np.concatenate(parts) if parts else np.zeros(0, np.int64)
++    krecs_all = np.concatenate(parts) if parts else np.zeros(0, np.int32)
++    del parts
++    for f in list(krec_list):          # turbo-socialsci 0.2: the lists are in krecs_all now
++        if f != B:
++            krec_list[f] = None
+     third = 1 / 3
+     biscale = .5 / (1 - minbigram) ** third
+     lo_pen = minbigram - .2

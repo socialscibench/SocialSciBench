@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "name": "stata-csdid201",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "Stata 18 MP (pystata)",
+    "csdid 2.0.1 (github.com/pedrohcgs/csdid-stata commit f98bcea0691b1670c409bb7e3cc81d60705b4f84)",
+    "pandas"
+  ],
+  "description": "Baseline: Stata csdid 2.0.1 via pystata for the task's csdid201-rule workloads (dr/reg/ipw = dripw/reg/stdipw, bal(pair), base_period, pscoretrim, analytical pointwise run for estimates and influence-function SEs, a second run with reps(B) for the bootstrap with Stata's own multipliers)."
+}

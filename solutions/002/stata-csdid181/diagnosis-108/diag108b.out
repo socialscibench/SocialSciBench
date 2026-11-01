@@ -1,0 +1,33 @@
+cell (25, 6): 190 units, 5 treated; reference coefficients (x1..x5, constant): [ -1.211   0.518   0.339 -37.263   0.098  -1.754]
+  x1: 109 distinct values; among the treated [1.09861229 2.19722458 3.17805383 3.21887582 3.87120101]; controls with a value no treated unit has: 169
+  x2: 69 distinct values; among the treated [1.09861229 1.94591015 2.30258509 2.39789527 2.77258872]; controls with a value no treated unit has: 162
+  x3: 162 distinct values; among the treated [0.5        0.5973535  0.61111111 0.65625    0.80579448]; controls with a value no treated unit has: 181
+  x4: 2 distinct values; among the treated [0.]; controls with a value no treated unit has: 91
+  x5: 29 distinct values; among the treated [ 6. 10. 14. 16.]; controls with a value no treated unit has: 145
+  reference scores of the controls: 91 below 1e-8, max 0.2822
+    The maximum number of processors or cores being used is changed from 2 to
+    1.  It can be set to any number between 1 and 2
+note: x4 != 0 predicts failure perfectly;
+      x4 omitted and 91 obs not used.
+Iteration 0:  Log likelihood = -19.799966  
+Iteration 1:  Log likelihood =  -18.35481  
+Iteration 2:  Log likelihood = -18.028149  
+Iteration 3:  Log likelihood = -18.023699  
+Iteration 4:  Log likelihood = -18.023691  
+Iteration 5:  Log likelihood = -18.023691  
+Logistic regression                                     Number of obs =     99
+                                                        LR chi2(4)    =   3.55
+                                                        Prob > chi2   = 0.4699
+Log likelihood = -18.023691                             Pseudo R2     = 0.0897
+------------------------------------------------------------------------------
+           D | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+          x1 |   -1.21129    .944085    -1.28   0.199    -3.061663    .6390824
+          x2 |   .5181226   1.029569     0.50   0.615    -1.499796    2.536042
+          x3 |   .3387552   2.513616     0.13   0.893    -4.587841    5.265352
+          x4 |          0  (omitted)
+          x5 |   .0983955   .0773841     1.27   0.204    -.0532746    .2500656
+       _cons |  -1.753977   1.286871    -1.36   0.173    -4.276198    .7682449
+------------------------------------------------------------------------------
+Stata: e(N) = 99 of 190; e(b) columns x1 x2 x3 o.x4 x5 _cons: [-1.211  0.518  0.339  0.     0.098 -1.754]
+  drdid's scores (predict after logit): controls below 1e-8: 0, max 0.2822

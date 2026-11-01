@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {
+      "id": "001",
+      "directory": "001_reghdfe",
+      "name": "Fixed-effects regression"
+    },
+    {
+      "id": "002",
+      "directory": "002_csdid",
+      "name": "Staggered-adoption difference-in-differences (combined task: core, options and published-package options)"
+    },
+    {
+      "id": "003",
+      "directory": "003_reclink",
+      "name": "Name and address record linkage"
+    }
+  ],
+  "deferred_directory": "deferred"
+}

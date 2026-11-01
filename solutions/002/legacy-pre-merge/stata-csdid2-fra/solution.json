@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "stata-csdid2-fra",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "Stata 18 MP (pystata)",
+    "csdid2 1.3",
+    "numpy==2.3.5",
+    "pandas==3.0.6"
+  ],
+  "description": "Baseline: Stata csdid2 (Mata rewrite of csdid; method dripw, never-treated controls, short = varying base period, analytic SEs, no propensity-score trimming) with estat attgt, simple and event, via pystata; panel passed as a temporary .dta file. Threads: Stata MP set processors."
+}

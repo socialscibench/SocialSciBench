@@ -1,0 +1,452 @@
+--- frozen/solutions/001/schur-cg/solution.py
++++ engine/core/hdfe_speed.py
+@@ -1,3 +1,5 @@
++# turbo-socialsci core: the frozen SocialSciBench candidate solutions/001/schur-cg (freeze of 2026-10-26)
++# with the plugin's changes (plugin/README.md; diff: plugin/tools/patches/hdfe_speed.diff).
+ """Task 001 candidate "schur-cg": OLS with high-dimensional fixed effects and one-way clustered
+ standard errors, as computed by reference.run (reghdfe conventions).
+ 
+@@ -32,6 +34,8 @@
+ import numpy as np
+ import numba as nb
+ 
++from ._ols import COLLINEAR_TOL, centered_ss, fit_stats, independent
++
+ TOL = 1e-9           # relative residual of the reduced normal equations, per column
+ MAXITER = 100_000
+ DENSE_MAX = 2000     # blocks with at most this many levels are inverted exactly (dense)
+@@ -44,7 +48,7 @@
+ # Recoding and singletons
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _dense_codes(ids, size):
+     seen = np.zeros(size, np.int64)
+     for i in nb.prange(ids.size):
+@@ -72,7 +76,7 @@
+     return inv.astype(np.int64), u.size
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _peel(codes, nlev):
+     """Rows kept after repeatedly dropping rows that are alone in a level of some fixed effect
+     (the fixed point the reference's passes reach; a sweep also drops rows that become
+@@ -105,7 +109,7 @@
+     return keep
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _group_rows_par(code, L, nparts):
+     n = code.size
+     hist = np.zeros((nparts, L + 1), np.int64)
+@@ -131,7 +135,7 @@
+     return off, rows
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _group_rows_serial(code, L):
+     n = code.size
+     off = np.zeros(L + 1, np.int64)
+@@ -159,14 +163,14 @@
+ # Structures of the reduced system
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(parallel=True)
+-def _incidence(off_b, rows_b, ocodes, Lo):
++@nb.njit(cache=True, parallel=True)
++def _incidence(off_b, rows_b, ocodes, Lo, nthreads):
+     """For every level of the eliminated fixed effect: its distinct levels of the other fixed
+     effects (stacked index) with row counts (CSR)."""
+     Lb = off_b.size - 1
+     nG = ocodes.shape[1]
+     nnz = np.zeros(Lb + 1, np.int64)
+-    nparts = max(1, min(Lb, 4 * nb.get_num_threads()))
++    nparts = max(1, min(Lb, 4 * nthreads))
+     for part in nb.prange(nparts):
+         mark = np.full(Lo, -1, np.int64)
+         for b in range(Lb * part // nparts, Lb * (part + 1) // nparts):
+@@ -201,7 +205,7 @@
+     return nnz, idx, cnt
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _transpose(ptr, idx, val, ncols):
+     nrow = ptr.size - 1
+     tp = np.zeros(ncols + 1, np.int64)
+@@ -221,13 +225,13 @@
+     return tp, ti, tv
+ 
+ 
+-@nb.njit(parallel=True)
+-def _crosstab(ocodes, Lo, offs, groups_off, groups_rows):
++@nb.njit(cache=True, parallel=True)
++def _crosstab(ocodes, Lo, offs, groups_off, groups_rows, nthreads):
+     """Cross-tabulation A_oo of the other fixed effects (stacked levels), CSR including the
+     diagonal counts. groups_* hold the rows of every stacked level."""
+     n, nG = ocodes.shape
+     nnz = np.zeros(Lo + 1, np.int64)
+-    nparts = max(1, min(Lo, 4 * nb.get_num_threads()))
++    nparts = max(1, min(Lo, 4 * nthreads))
+     for part in nb.prange(nparts):
+         mark = np.full(Lo, -1, np.int64)
+         for l in range(Lo * part // nparts, Lo * (part + 1) // nparts):
+@@ -274,7 +278,7 @@
+ # Group sums, the reduced operator and conjugate gradients (all columns at once)
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _group_sums(y, X, idx, off, rows, out):
+     """Per level, the sums of y and of every regressor over its rows (kept rows idx)."""
+     L = off.size - 1
+@@ -289,7 +293,7 @@
+                 out[l, 1 + j] += X[r, j]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _spmm(ptr, idx, val, X, Y, beta):
+     """Y = beta * Y + A X for CSR A and row-major X, Y (rows x K)."""
+     nrow = ptr.size - 1
+@@ -308,14 +312,14 @@
+                 Y[r, k] += a * X[c, k]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _scale_rows(T, s):
+     for r in nb.prange(T.shape[0]):
+         for k in range(T.shape[1]):
+             T[r, k] *= s[r]
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _order_levels(ptr, idx, Lo):
+     """Eliminated levels sorted by their smallest other level (counting sort), so that levels
+     processed one after another share rows of the operand. Every level has an entry."""
+@@ -338,7 +342,7 @@
+     return order
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _permute_rows(ptr, idx, val, order):
+     """The CSR rows order[0], order[1], ..."""
+     nptr = np.empty(order.size + 1, np.int64)
+@@ -356,7 +360,7 @@
+     return nptr, nidx, nval
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _fused_range(ptr, idx, cnt, cinv, P, Y, lo, hi):
+     """Y -= N_ob C^-1 N_bo P over the eliminated levels [lo, hi): each level's row of
+     C^-1 N_bo P is formed and scattered back at once, so those rows are never stored."""
+@@ -380,7 +384,7 @@
+                 Y[c, k] -= w * t[k]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _fused(ptr, idx, cnt, cinv, P, Y, bounds, Yp):
+     """Y -= N_ob C^-1 N_bo P, the eliminated levels split into parts by entries: part 0
+     scatters into Y, the others into their own buffers Yp, which are then added to Y."""
+@@ -400,7 +404,7 @@
+                 Y[r, k] += Yp[p, r, k]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _colsums2(A, B, out):
+     """out[k] = sum_r A[r, k] * B[r, k], in parallel partial sums."""
+     n, K = A.shape
+@@ -419,7 +423,7 @@
+         out[k] = s
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _axpy_cols(X, a, P, active):
+     for r in nb.prange(X.shape[0]):
+         for k in range(X.shape[1]):
+@@ -427,7 +431,7 @@
+                 X[r, k] += a[k] * P[r, k]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _precond(R, dinv, Z):
+     for r in nb.prange(R.shape[0]):
+         d = dinv[r]
+@@ -435,7 +439,7 @@
+             Z[r, k] = R[r, k] * d
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _precond_range(R, dinv, Z, lo, hi):
+     for r in nb.prange(lo, hi):
+         d = dinv[r]
+@@ -443,12 +447,29 @@
+             Z[r, k] = R[r, k] * d
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _update_p(P, Z, b, active):
+     for r in nb.prange(P.shape[0]):
+         for k in range(P.shape[1]):
+             if active[k]:
+                 P[r, k] = Z[r, k] + b[k] * P[r, k]
++
++
++ABSORBED = (1e4 * np.finfo(np.float64).eps) ** 2
++
++
++def _absorbed_rhs(B, So, Tb, no_ptr, no_idx, no_cnt):
++    """Plugin addition. A column absorbed by the eliminated fixed effect has a right-hand side
++    B = So - N_ob Tb of rounding residue only (the two terms cancel), which conjugate gradients cannot
++    reduce by tol: it is set to zero, so the column's other coefficients are zero and its demeaned
++    values vanish (the regressor is then dropped as collinear). Residue is judged against the scale
++    of the cancelling terms, |So| + N_ob |Tb|; any column with real variation is far above it."""
++    scale = np.abs(So)
++    _spmm(no_ptr, no_idx, no_cnt, np.abs(Tb), scale, 1.0)
++    noise = ABSORBED * (scale * scale).sum(0)
++    absorbed = (B * B).sum(0) <= noise
++    if absorbed.any():
++        B[:, absorbed] = 0.0
+ 
+ 
+ def _pcg(B, apply_S, precond, tol, maxiter):
+@@ -488,7 +509,7 @@
+     return X, it
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _residuals(y, X, idx, codes, alpha_b, bcol, alpha_o, ocols, offs, out):
+     """Demeaned rows: [y, X] of the kept rows minus their fixed-effect coefficients."""
+     n = idx.size
+@@ -506,7 +527,7 @@
+                 out[r, j] -= alpha_o[o, j]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _cluster_scores(W, e, off, rows, out):
+     """Cluster sums of x_r e_r (x_r = W[r, 1:])."""
+     G = off.size - 1
+@@ -521,7 +542,7 @@
+                 out[g, j] += W[r, 1 + j] * er
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _diag_correction(diag, ptr, idx, cnt, cinv):
+     for b in range(ptr.size - 1):
+         for t in range(ptr[b], ptr[b + 1]):
+@@ -533,7 +554,7 @@
+ # "AC" sampling of Gao, Kyng & Spielman 2023), dense pseudo-inverse for small blocks
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _rand(state):
+     x = state[0]
+     x ^= x << np.uint64(13)
+@@ -543,7 +564,7 @@
+     return np.float64(x >> np.uint64(11)) * (1.0 / 9007199254740992.0)
+ 
+ 
+-@nb.njit(nogil=True)
++@nb.njit(cache=True, nogil=True)
+ def _approx_chol(n, ei, ej, ew, seed):
+     """Randomized approximate Cholesky factorization L D L' of the Laplacian of the multigraph
+     (ei, ej, ew). Vertices are eliminated in order of increasing degree; eliminating v replaces
+@@ -675,7 +696,7 @@
+     return order, fptr, fidx2, fval[:fpos].copy(), D2
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _ac_solve_chunk(order, fptr, fidx, fval, D, Wc, R, Z, o0, k0, k1):
+     """Columns [k0, k1) (at most 8) of Z[o0:o0+n] = (L D L')^+ R[o0:o0+n]. The factor is
+     labelled in elimination order; Wc (n x 8) holds the block's rows in that order, padded
+@@ -726,7 +747,7 @@
+             Z[v, k0 + k] = Wc[i, k]
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _ac_solve(order, fptr, fidx, fval, D, W, R, Z, o0):
+     """Z[o0:o0+n] = (L D L')^+ R[o0:o0+n] for every column, in chunks of 8 columns (in
+     parallel); W is a (chunks, n, 8) buffer."""
+@@ -735,7 +756,7 @@
+         _ac_solve_chunk(order, fptr, fidx, fval, D, W[ch], R, Z, o0, 8 * ch, min(K, 8 * ch + 8))
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _block_pairs(ptr, idx, cnt, cinv, lo, hi, dense):
+     """Contributions sum_b n_bl n_bl' / c_b of the eliminated levels to the block [lo, hi):
+     with dense, the full (hi-lo)^2 matrix; otherwise the off-diagonal pairs as an edge list."""
+@@ -780,7 +801,7 @@
+     return np.zeros((0, 0)), ei, ej, ew
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _assemble_dense(ptr, idx, cnt, cinv, Lo):
+     """sum_b n_b n_b' / c_b as a dense Lo x Lo matrix."""
+     Mx = np.zeros((Lo, Lo))
+@@ -794,14 +815,14 @@
+     return Mx
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _add_csr_dense(ptr, idx, val, Mx):
+     for r in range(ptr.size - 1):
+         for t in range(ptr[r], ptr[r + 1]):
+             Mx[r, idx[t]] += val[t]
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _split_S(ptr, idx, val, small_rows, is_small):
+     """Rows of S in small_rows as a dense (len(small_rows) x Lo) array; the rest of S without
+     the columns of small blocks (those products use the dense rows' transpose) as CSR."""
+@@ -834,7 +855,7 @@
+     return Dn, nnz, i2, v2
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _pair_counts(ptr, idx, offs):
+     """P[g, h] = sum over eliminated levels of (its levels in block g) x (its levels in block h)."""
+     nblk = offs.size - 1
+@@ -855,12 +876,12 @@
+     return out
+ 
+ 
+-@nb.njit(parallel=True, nogil=True)
+-def _assemble_S(a_ptr, a_idx, a_val, nb_ptr, nb_idx, nb_cnt, no_ptr, no_idx, no_cnt, cinv):
++@nb.njit(cache=True, parallel=True, nogil=True)
++def _assemble_S(a_ptr, a_idx, a_val, nb_ptr, nb_idx, nb_cnt, no_ptr, no_idx, no_cnt, cinv, nthreads):
+     """S = A_oo - N_ob C^-1 N_bo as CSR (Gustavson row by row)."""
+     Lo = a_ptr.size - 1
+     nnz = np.zeros(Lo + 1, np.int64)
+-    nparts = max(1, min(Lo, 4 * nb.get_num_threads()))
++    nparts = max(1, min(Lo, 4 * nthreads))
+     for part in nb.prange(nparts):
+         mark = np.full(Lo, -1, np.int64)
+         for l in range(Lo * part // nparts, Lo * (part + 1) // nparts):
+@@ -913,7 +934,7 @@
+ # Degrees of freedom absorbed by the fixed effects (reghdfe conventions, as in the reference)
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _nested(a, La, b):
+     """Every level of a lies within one level of b."""
+     first = np.full(La, -1, np.int64)
+@@ -925,7 +946,7 @@
+     return True
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _components(a, La, b, Lb):
+     parent = np.arange(La + Lb)
+     for i in range(a.size):
+@@ -967,7 +988,7 @@
+ 
+ # ----------------------------------------------------------------------------------------------
+ 
+-def run(y, X, fe_ids, cluster_ids, tol=1e-8, maxiter=100_000):
++def run(y, X, fe_ids, cluster_ids, tol=1e-8, maxiter=100_000, collinear_tol=COLLINEAR_TOL):
+     y = np.asarray(y, dtype=np.float64)
+     X = np.asarray(X, dtype=np.float64).reshape(len(y), -1)
+     fe_ids = np.asarray(fe_ids).reshape(len(y), -1)
+@@ -1014,9 +1035,9 @@
+         stacked = ocodes.ravel()                              # rows of every stacked level
+         g_off, g_rows_flat = _group_rows(stacked, Lo)
+         g_rows = g_rows_flat // len(ocols)
+-        nb_ptr, nb_idx, nb_cnt = _incidence(off_b, rows_b, ocodes, Lo)
++        nb_ptr, nb_idx, nb_cnt = _incidence(off_b, rows_b, ocodes, Lo, nb.get_num_threads())
+         no_ptr, no_idx, no_cnt = _transpose(nb_ptr, nb_idx, nb_cnt, Lo)
+-        a_ptr, a_idx, a_val = _crosstab(ocodes, Lo, offs, g_off, g_rows)
++        a_ptr, a_idx, a_val = _crosstab(ocodes, Lo, offs, g_off, g_rows, nb.get_num_threads())
+         cinv = 1.0 / cb
+         So = np.empty((Lo, K))
+         _group_sums(y, X, idx, g_off, g_rows, So)
+@@ -1024,6 +1045,7 @@
+         Tb = Sb * cinv[:, None]
+         B = So.copy()
+         _spmm(no_ptr, no_idx, -no_cnt, Tb, B, 1.0)
++        _absorbed_rhs(B, So, Tb, no_ptr, no_idx, no_cnt)
+         # diagonal of S
+         diag = np.diff(g_off).astype(np.float64)
+         _diag_correction(diag, nb_ptr, nb_idx, nb_cnt, cinv)
+@@ -1065,7 +1087,7 @@
+                 np.matmul(Sd, P, out=Y)
+         elif explicit_nnz <= 2 * implicit_cost:      # the implicit route also streams N_bo C^-1 N_bo
+             s_ptr, s_idx, s_val = _assemble_S(a_ptr, a_idx, a_val, nb_ptr, nb_idx, nb_cnt,
+-                                              no_ptr, no_idx, no_cnt, cinv)
++                                              no_ptr, no_idx, no_cnt, cinv, nb.get_num_threads())
+             small = sizes <= SMALL_BLOCK                  # small blocks come last (see ocols)
+             if small.any() and not small.all():
+                 is_small = np.repeat(small, sizes)
+@@ -1122,17 +1144,37 @@
+     W = np.empty((n, K))
+     _residuals(y, X, idx, codes, alpha_b, bcol, alpha_o, ocols, offs, W)
+ 
+-    # 3. OLS on the demeaned data and the one-way cluster-robust sandwich.
++    # 3. OLS on the demeaned data and the one-way cluster-robust sandwich. Regressors collinear with
++    # the fixed effects or with regressors to their left are dropped (plugin addition); with none
++    # dropped, the frozen candidate's operations run unchanged.
+     WW = W.T @ W
+-    XtX_inv = np.linalg.inv(WW[1:, 1:])
+-    beta = XtX_inv @ WW[1:, 0]
+-    e = W @ np.concatenate([[1.0], -beta])
++    keep_x = independent(WW[1:, 1:], centered_ss(X, idx), collinear_tol)
++    kept = np.flatnonzero(keep_x)
+     c_off, c_rows = _group_rows(cl, Lc)
+     scores = np.empty((Lc, k))
+-    _cluster_scores(W, e, c_off, c_rows, scores)
+-    meat = scores.T @ scores
+     df_a = _absorbed_df(codes, L, cl, Lc)
+-    Kdf = k + 1 + df_a
++    Kdf = kept.size + 1 + df_a
+     q = (n - 1) / (n - Kdf) * Lc / (Lc - 1)
+-    vcov = q * XtX_inv @ meat @ XtX_inv
+-    return dict(beta=beta, vcov=vcov, nobs=int(n), df_a=int(df_a), n_clusters=int(Lc))
++    if kept.size == k:
++        XtX_inv = np.linalg.inv(WW[1:, 1:])
++        beta = XtX_inv @ WW[1:, 0]
++        e = W @ np.concatenate([[1.0], -beta])
++        _cluster_scores(W, e, c_off, c_rows, scores)
++        meat = scores.T @ scores
++        vcov = q * XtX_inv @ meat @ XtX_inv
++    else:
++        XtX_inv = np.linalg.inv(WW[1:, 1:][np.ix_(kept, kept)]) if kept.size else np.zeros((0, 0))
++        b_kept = XtX_inv @ WW[1:, 0][kept]
++        b_all = np.zeros(k)
++        b_all[kept] = b_kept
++        e = W @ np.concatenate([[1.0], -b_all])
++        _cluster_scores(W, e, c_off, c_rows, scores)
++        meat = scores[:, kept].T @ scores[:, kept]
++        beta = np.full(k, np.nan)
++        beta[kept] = b_kept
++        vcov = np.full((k, k), np.nan)
++        vcov[np.ix_(kept, kept)] = q * XtX_inv @ meat @ XtX_inv
++    out = dict(beta=beta, vcov=vcov, nobs=int(n), df_a=int(df_a), n_clusters=int(Lc),
++               kept=keep_x, dropped=np.flatnonzero(~keep_x))
++    out.update(fit_stats(float(e @ e), y, idx, float(WW[0, 0])))
++    return out

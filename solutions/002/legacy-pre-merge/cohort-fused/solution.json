@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "cohort-fused",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy==2.3.5",
+    "numba==0.62.1"
+  ],
+  "description": "One logit per cohort and one never-treated OLS for all periods; every cell's doubly robust influence function evaluated per unit in a fused Numba pass that also forms the simple, event-time and pre/post aggregates (no n_units x n_cells matrix); exact reference code for non-converging cohorts and numerically-zero cells. Threads: NUMBA_NUM_THREADS."
+}

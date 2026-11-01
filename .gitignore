@@ -1,0 +1,15 @@
+__pycache__/
+.DS_Store
+*.dta
+*.log
+*.do
+w_out.txt
+.venv/
+.pytest_cache/
+runs/
+*.egg-info/
+datasets/001/
+datasets/002/
+datasets/003/
+datasets/*-legacy-*/
+freezes/

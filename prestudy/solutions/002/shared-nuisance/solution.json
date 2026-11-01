@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "shared-nuisance",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "numba"
+  ],
+  "description": "Fits the propensity logit once per cohort (warm-started Newton, blocked BLAS) and one outcome OLS for all periods; evaluates every cell's doubly robust influence function in closed form in one compiled pass over units, accumulating cell variances and simple/event aggregates without the n_units x n_cells matrix; single-threaded."
+}

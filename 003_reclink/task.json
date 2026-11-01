@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "contract_version": 2,
+  "id": "003",
+  "directory": "003_reclink",
+  "prompt_files": [
+    "task.md",
+    "reference.py",
+    "workloads.py",
+    "task.json",
+    "realdata.py",
+    "real_workloads.json",
+    "DATA.md"
+  ],
+  "reference_entry_point": "reference.py::run",
+  "workload_entry_point": "workloads.py::generate",
+  "workload_catalog": "workloads.py::WORKLOADS",
+  "validator": "harness.validation::validate",
+  "adapter": "harness.cases::generate_inputs",
+  "tolerances": {
+    "relative_floor": 1e-12,
+    "score_rtol": 1e-06
+  },
+  "default_workload_ids": [
+    1
+  ],
+  "input_policy": "read_only",
+  "timing": "wall-clock run call; host-ready outputs; synchronization included; setup and validation excluded",
+  "development_entry_point": "harness.cases::development_cases",
+  "realdata_entry_point": "realdata.py::load",
+  "real_workload_catalog": "real_workloads.json"
+}

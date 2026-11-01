@@ -1,0 +1,3 @@
+{"n_firms": 1000, "n_firms_used": 713, "n_obs_used": 10695, "status": "ok", "logit_s": 28.316, "margins_s": 11.471, "progress": null}
+{"n_firms": 2000, "n_firms_used": 1374, "n_obs_used": 20610, "status": "ok", "logit_s": 218.698, "margins_s": 47.486, "progress": null}
+{"n_firms": 3000, "n_firms_used": 2081, "n_obs_used": 31215, "status": "ok", "logit_s": 707.672, "margins_s": 108.35, "progress": null}

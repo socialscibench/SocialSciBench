@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "task": "002",
+  "note": "Held-out file sizes and SHA-256 values are filled in by the study maintainer from the private copy before a freeze (DATA.md); until then final evaluation stops at the file check.",
+  "workloads": [
+    {
+      "id": 101,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/101.parquet",
+          "size": 186054,
+          "sha256": "648570d7531962ce42d1976ee93d5dea458047be9af6d59d26b25163cfe9cf25"
+        }
+      ],
+      "design": "state policy shock at firm level",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 9175,
+      "n_periods": 20,
+      "control": "notyet",
+      "method": "dripw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "bootstrap 999",
+      "rules": "csdid201"
+    },
+    {
+      "id": 102,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/102.parquet",
+          "size": 151213,
+          "sha256": "8c67b52de6715b38abfa5c99e8449365bbb8701bcf5ff55b00426d6f63175fc4"
+        }
+      ],
+      "design": "firm event: first alliance; firms exit",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 4532,
+      "n_periods": 30,
+      "control": "never",
+      "method": "dripw",
+      "weighted": true,
+      "panel": "unbalanced",
+      "base_period": "varying",
+      "inference": "analytic",
+      "rules": "csdid181"
+    },
+    {
+      "id": 103,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/103.parquet",
+          "size": 213795,
+          "sha256": "d4e606113fe2009511561e70870e45835358420905e780b138d15c1854b5c3bf"
+        }
+      ],
+      "design": "firm diversification, 10 covariates",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 10000,
+      "n_periods": 20,
+      "control": "never",
+      "method": "reg",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "analytic, event subsets",
+      "rules": "csdid201"
+    },
+    {
+      "id": 104,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/104.parquet",
+          "size": 180471,
+          "sha256": "7dbac9c547082fea16e380eaab42f392c3650bca1f38c62d34c1eb22a8fa63f8"
+        }
+      ],
+      "design": "inventor job moves, monthly",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 10000,
+      "n_periods": 60,
+      "control": "never",
+      "method": "dripw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "varying",
+      "inference": "analytic",
+      "rules": "csdid201"
+    },
+    {
+      "id": 105,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/105.parquet",
+          "size": 156568,
+          "sha256": "d79e7966d313316c63a114afbc825ae61a66c2cb1532bc7f3bc81f1a67625793"
+        }
+      ],
+      "design": "rare late adoption, quarterly",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 5765,
+      "n_periods": 42,
+      "control": "notyet",
+      "method": "stdipw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "varying",
+      "inference": "analytic",
+      "rules": "csdid201"
+    },
+    {
+      "id": 106,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/101.parquet",
+          "size": 186054,
+          "sha256": "648570d7531962ce42d1976ee93d5dea458047be9af6d59d26b25163cfe9cf25"
+        }
+      ],
+      "design": "as 101 without covariates",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 9175,
+      "n_periods": 20,
+      "control": "never",
+      "method": "reg",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "varying",
+      "inference": "analytic",
+      "rules": "csdid181"
+    },
+    {
+      "id": 107,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/107.parquet",
+          "size": 1665137,
+          "sha256": "cd2e0f6ad382f50186ff172c1669a38784fff63f74228c0f4a016d8e44a598bd"
+        }
+      ],
+      "design": "headline: inventor job moves, yearly, binary outcome",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 198649,
+      "n_periods": 20,
+      "control": "never",
+      "method": "dripw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "varying",
+      "inference": "bootstrap 999, trim 0.995",
+      "rules": "csdid201"
+    },
+    {
+      "id": 108,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/108.parquet",
+          "size": 53984,
+          "sha256": "2bf775503f12207dbdbbd962d281f31ff3d613267eab8370fb1a03bf7cdd659b"
+        }
+      ],
+      "design": "nearly universal adoption",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 775,
+      "n_periods": 30,
+      "control": "notyet",
+      "method": "ipw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "bootstrap 25000",
+      "rules": "csdid181"
+    },
+    {
+      "id": 109,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/109.parquet",
+          "size": 1246214,
+          "sha256": "d320cbbd27b86832a660fa0949ab9545e2ff4eb94b4a19ac62013219c11c89de"
+        }
+      ],
+      "design": "as 101 with covariates measured every year",
+      "source": "PatentsView PVGPATDIS 2026-04-10",
+      "n_units": 9175,
+      "n_periods": 20,
+      "control": "notyet",
+      "method": "dripw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "analytic, trim 0.995",
+      "rules": "csdid181"
+    },
+    {
+      "id": 301,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/301.parquet",
+          "size": null,
+          "sha256": null
+        }
+      ],
+      "design": "SEC: CEO turnover, all filer firms",
+      "n_units": 15526,
+      "n_periods": 20,
+      "control": "notyet",
+      "method": "dripw",
+      "weighted": false,
+      "panel": "unbalanced",
+      "base_period": "varying",
+      "inference": "analytic, trim 0.995",
+      "rules": "csdid201"
+    },
+    {
+      "id": 302,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/302.parquet",
+          "size": null,
+          "sha256": null
+        }
+      ],
+      "design": "SEC: CEO turnover, firms filing every year",
+      "n_units": 1946,
+      "n_periods": 20,
+      "control": "never",
+      "method": "ipw",
+      "weighted": false,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "analytic, event subsets",
+      "rules": "csdid181"
+    },
+    {
+      "id": 401,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/401.parquet",
+          "size": null,
+          "sha256": null
+        }
+      ],
+      "design": "QCEW: state minimum wage, county restaurants",
+      "n_units": 1514,
+      "n_periods": 15,
+      "control": "notyet",
+      "method": "dripw",
+      "weighted": true,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "bootstrap 25000",
+      "rules": "csdid201"
+    },
+    {
+      "id": 402,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/402.parquet",
+          "size": null,
+          "sha256": null
+        }
+      ],
+      "design": "headline: QCEW county x industry, quarterly",
+      "n_units": 88835,
+      "n_periods": 60,
+      "control": "notyet",
+      "method": "stdipw",
+      "weighted": true,
+      "panel": "unbalanced",
+      "base_period": "varying",
+      "inference": "bootstrap 999",
+      "rules": "csdid201"
+    },
+    {
+      "id": 403,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/403.parquet",
+          "size": null,
+          "sha256": null
+        }
+      ],
+      "design": "QCEW county x industry, annual (sample)",
+      "n_units": 20000,
+      "n_periods": 15,
+      "control": "never",
+      "method": "reg",
+      "weighted": true,
+      "panel": "balanced",
+      "base_period": "varying",
+      "inference": "bootstrap 999",
+      "rules": "csdid181"
+    },
+    {
+      "id": 404,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/404.parquet",
+          "size": null,
+          "sha256": null
+        }
+      ],
+      "design": "as 401 with covariates measured every year",
+      "n_units": 1514,
+      "n_periods": 15,
+      "control": "notyet",
+      "method": "dripw",
+      "weighted": true,
+      "panel": "balanced",
+      "base_period": "universal",
+      "inference": "bootstrap 25000, trim 0.995",
+      "rules": "csdid181"
+    }
+  ]
+}

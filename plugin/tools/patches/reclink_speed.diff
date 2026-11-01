@@ -1,0 +1,340 @@
+--- frozen/solutions/003/block-index/solution.py
++++ engine/core/reclink_speed.py
+@@ -1,3 +1,5 @@
++# turbo-socialsci core: the frozen SocialSciBench candidate solutions/003/block-index (freeze of 2026-10-26)
++# with the plugin's changes (plugin/README.md; diff: plugin/tools/patches/reclink_speed.diff).
+ """Task 003 candidate "block-index": reclink2 record linkage (perfect matches, required +
+ or-blocking, reclink's bigram comparator with the Winkler-type prefix bonus, float32 match and
+ non-match weights, every tied best candidate), as computed by reference.run.
+@@ -45,7 +47,7 @@
+ # Hashing and dictionaries
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _fmix(h):
+     h ^= h >> U64(33)
+     h *= U64(0xFF51AFD7ED558CCD)
+@@ -55,7 +57,7 @@
+     return h
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _word(A, r, k0):
+     """Characters k0..k0+7 of row r of a UCS4 array packed into 64 bits (8 bits each; positions
+     past the width are NUL); bit 7 of a byte set or a character above 255 marks non-ASCII."""
+@@ -75,7 +77,7 @@
+     return x, hi
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _hash_row(A, r):
+     """Hash of row r of a UCS4 array (its characters up to the terminating NUL), 8 per step;
+     second value: whether a non-ASCII character was seen."""
+@@ -93,13 +95,13 @@
+     return _fmix(h), bad
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _prefix_hash(A, r):
+     x, hi = _word(A, r, 0)
+     return _fmix(x ^ U64(0xC2B2AE3D27D4EB4F))
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _equal_rows(A, r, Bm, s):
+     """Row r of UCS4 array A equals row s of UCS4 array Bm (NUL-terminated or full width)."""
+     w = max(A.shape[1], Bm.shape[1])
+@@ -113,7 +115,7 @@
+     return True
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _build_table(Mv, plen):
+     """Open-addressing table of the distinct master values (rows of Mv) and the prefix filter."""
+     n = Mv.shape[0]
+@@ -137,7 +139,7 @@
+     return keys, vals, filt
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _lookup(U, Mv, keys, vals, filt, plen, out, bad):
+     """Id of the equal master value for every using value (row of U), or -1."""
+     n = U.shape[0]
+@@ -165,7 +167,7 @@
+             out[j] = res
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _key_table(a, b, nb_):
+     """Ids of distinct pairs (a[i], b[i]) (both >= 0) with a lookup table; -1 where b < 0."""
+     n = a.size
+@@ -192,7 +194,7 @@
+     return keys, vals, ids, nk
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _key_lookup(keys, vals, a, b, nb_, out):
+     n = a.size
+     mask = keys.size - 1
+@@ -209,7 +211,7 @@
+             idx = (idx + 1) & mask
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _group(key, nkeys, skip):
+     """CSR lists of the indices i with key[i] >= 0 (and not skip[i]), by key."""
+     cnt = np.zeros(nkeys + 1, np.int64)
+@@ -231,7 +233,7 @@
+ # The comparator (reclink's bigram1) and the weights, as in the reference
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _f32(x):
+     return np.float64(np.float32(x))
+ 
+@@ -261,7 +263,7 @@
+     return types.float32(types.int32), codegen
+ 
+ 
+-@nb.njit(inline="always", error_model="numpy")
++@nb.njit(cache=True, inline="always", error_model="numpy")
+ def _cbrt(x):
+     """x^(1/3) for 2e-8 <= x <= 1, branch-free (vectorizes): a float32 bit estimate (FreeBSD
+     cbrtf's constant) and three Halley steps (relative error near double rounding)."""
+@@ -292,7 +294,7 @@
+     return types.void(arr, types.intp), codegen
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _bonus(b, memo_key, memo_val, minbigram, biscale, third):
+     """biscale (b - minbigram)^(1/3), memoized by the value of b (b takes few distinct values)."""
+     k = _bits(b)
+@@ -303,7 +305,7 @@
+     return memo_val[h]
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _wink(lm, ls, cp):
+     w = 0.0
+     for i in range(1, 5):
+@@ -313,7 +315,7 @@
+     return w
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _contains(A, r, la, Bm, s, lb):
+     """Row s of Bm (length lb) occurs in row r of A (length la)."""
+     if lb == 0:
+@@ -329,7 +331,7 @@
+     return False
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _bigram_value(count, lm, ls, cp, eq, contained):
+     """reclink's bigram1 for one pair, with the reference's rounding."""
+     g = 0.0
+@@ -348,7 +350,7 @@
+     return g
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _accumulate(M, NM, bi, wm, wnm, m_empty, u_empty, minbigram, lo_pen, biscale, third):
+     """One scored variable's contribution to M and NM (reference.run's update order)."""
+     if not m_empty:
+@@ -371,7 +373,7 @@
+ # Value encodings: lengths, packed first four characters, distinct bigram codes
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _length(A, r):
+     w = A.shape[1]
+     for k in range(w):
+@@ -380,7 +382,7 @@
+     return w
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _prefix4(A, r, ln):
+     p = np.uint32(0)
+     for k in range(min(4, ln)):
+@@ -388,7 +390,7 @@
+     return p
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _common_prefix(pm, ps, lm):
+     """Number of leading characters (at most 4, master characters non-empty) equal in both."""
+     x = pm ^ ps
+@@ -400,7 +402,7 @@
+     return min(cp, lm)
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _invert(codes_off, codes, n, ucodes, lst_off, lst, hist):
+     """Inverted lists: for each distinct code (sorted, in ucodes) the block positions holding it."""
+     m = codes_off[n]
+@@ -425,7 +427,7 @@
+ 
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _encode_block(Uf, uidf, f_uid, brecs, s0, n, lens, pre, bid, stamp, tag0):
+     """Lengths, packed prefixes and value ids of the block's using records (rows prefetched)."""
+     tot = 0
+@@ -442,7 +444,7 @@
+     return tot
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _direct_counts(Uf, uidf, brecs, s0, n, lens, pre, bid, table, cnt, stamp, tag0, encode):
+     """For blocks with few master records: per using record, the number of the master value's
+     bigrams (table, with multiplicity) occurring in it, read directly from its characters; with
+@@ -468,7 +470,7 @@
+         cnt[r] = c_
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _block_codes(Uf, brecs, s0, n, lens, codes, loc, stamp, tag0):
+     """Distinct bigram codes of each record (CSR: loc), from the block's using records."""
+     pos = 0
+@@ -492,7 +494,7 @@
+     return pos, bad
+ 
+ 
+-@nb.njit(inline="always")
++@nb.njit(cache=True, inline="always")
+ def _find(ucodes, lo, hi, c):
+     """Position of code c in the sorted ucodes[lo:hi], or -1."""
+     while lo < hi:
+@@ -504,7 +506,7 @@
+     return lo
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _master_bigrams(Mv, v, ln, table, sign):
+     """Add (sign=1) or remove (sign=-1) the bigram counts of master value v to table."""
+     for k in range(ln - 1):
+@@ -513,7 +515,7 @@
+             table[c] += sign
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _direct_count(U, j, ls, table, stamp, tag):
+     """Number of bigrams of the master value (counted in table, with multiplicity) that occur in
+     using value j: the sum of table over j's distinct bigrams."""
+@@ -526,7 +528,7 @@
+     return cnt
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _exact_block_score(i, r, Utup, Mtup, mid, mlen, mpre, kind, fidx, wm, wnm, brecs, s0,
+                        counts, lens, pre, bid, minbigram, lo_pen, biscale, third):
+     """Exact score (reference operations, libm pow for the bonus) of block record r for master
+@@ -557,7 +559,7 @@
+     return _f32(M / (M + NM))
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _task(task, Utup, Mtup, mid, uid, mlen, mpre, kind, fidx, idxf, wm, wnm,
+           order, task_off, mblock, ubk, bcnt, brecs,
+           mkey, kcnt, krecs, koff, ortype,
+@@ -861,7 +863,7 @@
+     out_n[task] = nout
+ 
+ 
+-@nb.njit(parallel=True)
++@nb.njit(cache=True, parallel=True)
+ def _search(Utup, Mtup, mid, uid, mlen, mpre, kind, fidx, idxf, wm, wnm,
+             order, task_off, mblock, ubk, bcnt, brecs,
+             mkey, kcnt, krecs, koff, ortype,
+@@ -881,7 +883,7 @@
+               minscore, minbigram, lo_pen, biscale, third, maxn, cap, out_i, out_j, out_s, out_n, bad)
+     return out_i, out_j, out_s, out_n
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _perfect(tm, tu, ntm):
+     """All pairs (i, j) with master tuple tm[i] == using tuple tu[j] (>= 0)."""
+     cnt, grp = _group(tm, ntm, np.zeros(tm.size, np.bool_))
+@@ -902,7 +904,7 @@
+     return pi, pj
+ 
+ 
+-@nb.njit
++@nb.njit(cache=True)
+ def _lengths_of(Mv):
+     out = np.empty(Mv.shape[0], np.int32)
+     for v in range(Mv.shape[0]):
+@@ -911,6 +913,8 @@
+ 
+ 
+ def _ucs4(a):
++    if isinstance(a, np.ndarray) and a.ndim == 2 and a.dtype == np.uint8:
++        return a                       # turbo-socialsci 0.2: ASCII bytes, one NUL-padded row per value
+     a = np.ascontiguousarray(np.asarray(a, dtype=str))
+     w = max(a.dtype.itemsize // 4, 1)
+     if a.size == 0:
+@@ -946,11 +950,20 @@
+     nvals = np.empty(nv, np.int64)
+     lens_m = []
+     for f, v in enumerate(vars):
+-        vals, inv = np.unique(np.asarray(master[v], dtype=str), return_inverse=True)
+-        Mv = _ucs4(vals)
+-        ln = _lengths_of(Mv)
+-        if Mv.size and (Mv.max() > 127 or not np.array_equal(ln, np.char.str_len(vals))):
+-            raise ValueError("master values must be ASCII strings without NUL characters")
++        mv = master[v]
++        if isinstance(mv, np.ndarray) and mv.ndim == 2 and mv.dtype == np.uint8:
++            # turbo-socialsci 0.2: ASCII bytes (checked by the caller); the distinct rows in byte
++            # order, which for ASCII is the order of the strings
++            w = mv.shape[1]
++            vals, inv = np.unique(np.ascontiguousarray(mv).view(f"S{w}").reshape(-1), return_inverse=True)
++            Mv = np.ascontiguousarray(vals).view(np.uint8).reshape(-1, w)
++            ln = _lengths_of(Mv)
++        else:
++            vals, inv = np.unique(np.asarray(mv, dtype=str), return_inverse=True)
++            Mv = _ucs4(vals)
++            ln = _lengths_of(Mv)
++            if Mv.size and (Mv.max() > 127 or not np.array_equal(ln, np.char.str_len(vals))):
++                raise ValueError("master values must be ASCII strings without NUL characters")
+         Mtup.append(Mv)
+         lens_m.append(ln)
+         mid[f] = inv.reshape(-1)
+@@ -964,8 +977,8 @@
+     mpre = np.zeros((nv, max(int(nvals.max()), 1)), np.uint32)
+     for f in range(nv):
+         mlen[f, :nvals[f]] = lens_m[f]
+-        for v_ in range(nvals[f]):
+-            mpre[f, v_] = sum(int(Mtup[f][v_, k]) << (8 * k) for k in range(min(4, lens_m[f][v_])))
++        for k in range(min(4, Mtup[f].shape[1])):        # rows are NUL-padded past their length
++            mpre[f, :nvals[f]] |= Mtup[f][:, k].astype(np.uint32) << np.uint32(8 * k)
+     if bad[0]:
+         raise ValueError("using values must be ASCII strings")
+ 

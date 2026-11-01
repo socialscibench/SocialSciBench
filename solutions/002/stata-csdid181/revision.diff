@@ -1,0 +1,179 @@
+--- solution.py.first-version
++++ solution.py
+@@ -3,24 +3,34 @@
+ (rules="csdid181"; 1.82 is 1.81 with a bug fix, the version on SSC):
+ 
+     csdid y x1 ... xk [iw = w], ivar(id) time(t) gvar(gvar) method(m) [notyet] [long2]
+-          pscoretrim(#) level(#)
++          pscoretrim(#) level(#) [saverif(ssbrif) replace]
+     estat simple / group / calendar
+     estat event, window(lo hi)                         // Pre_avg, Post_avg, Tm#, Tp#
+ 
+-and, with bootstrap multipliers, the same estimation again with
+-`wboot(reps(B) wbtype(rademacher) rseed(#))`.
++and, with bootstrap multipliers, on the saved influence functions (RIFs):
+ 
++    use ssbrif, clear
++    csdid_stats attgt|simple|group|calendar|event, wboot(reps(B) wbtype(rademacher) rseed(#))
++
+ - **Options:** the universal base period is csdid's `long2` (y_t - y_(g-1), the task's sign).
+   Trimming is `pscoretrim()`, which csdid passes to drdid. Covariates that vary over time are
+   given per unit-period row, and drdid uses the cell's earlier period, as the task does.
+-- **Analytic run:** gives the estimates and influence-function standard errors. ATT(g,t) comes
+-  from e(b)/e(V) (equation g<cohort>, column t_<base>_<t>; the cohort-weight equation `wgt` is
+-  skipped), the aggregations from r(b)/r(V) of estat. The event-study covariance and the
+-  event-time subsets come from estat event's r(V); 1.82 has no event-subset command.
+-- **Bootstrap run:** gives bootstrap standard errors and critical values with Stata's own
+-  Rademacher multipliers. They differ from the reference's (computed from the given multipliers)
+-  by the bootstrap's sampling noise; they are timed but not comparable (compare.py
+-  --not-comparable se_boot_ crit_).
++- **Estimates and analytic standard errors:** ATT(g,t) comes from e(b)/e(V) (equation
++  g<cohort>, column t_<base>_<t>; the cohort-weight equation `wgt` is skipped), the aggregations
++  from r(b)/r(V) of estat. The event-study covariance and the event-time subsets come from estat
++  event's r(V); 1.82 has no event-subset command.
++- **Event window under long2:** csdid 1.82 keeps a cohort's long2 cells in period order without
++  g - 1, but its event aggregation (estat event and csdid_stats event) pairs them with e(tlev),
++  the periods from the second on. A pre-treatment cell of period t is then taken as period
++  t + 1: its Tm# label is right, but the window selects it as e + 1, so window(-5 5) returns
++  e = -6..-2 before treatment. The window is moved by one period on the pre-treatment side, so
++  the event times returned (and Pre_avg) are the task's.
++- **Bootstrap:** csdid_stats' wild bootstrap of the saved RIFs gives the bootstrap standard
++  errors (its interquartile-range estimate) and the uniform bands' critical values for ATT(g,t)
++  and every aggregation. (estat after an estimation with wboot() reports asymptotic standard
++  errors for the aggregations, so it is not used.) Stata draws its own Rademacher multipliers,
++  so these differ from the reference's (computed from the given multipliers) by the bootstrap's
++  sampling noise; they are timed but not comparable (compare.py --not-comparable se_boot_ crit_).
+ 
+ The long panel (one row per observed unit-period) is written to a temporary .dta file inside the
+ timed call. Stata MP is limited to the evaluator's thread count.
+@@ -69,6 +79,7 @@
+     stata.run(line, quietly=True)
+ 
+ NUM = r"(\d+)(?:\.0*)?"
++RIF = "ssbrif"          # saverif() takes a name: the file is saved in Stata's working directory
+ 
+ 
+ def _matrix(kind):
+@@ -80,11 +91,34 @@
+     return b, V, Macro.getGlobal("SSB_eq").split(), Macro.getGlobal("SSB_nm").split()
+ 
+ 
+-def _labelled(command):
+-    """estat results by label: 'avg' for the GAverage/CAverage/ATT rows, 'pre'/'post' for the event
+-    averages, integers for G#/T# (cohort, period) and signed integers for Tm#/Tp# (event time); with
+-    b and V of the labelled rows."""
++def _band():
++    """r(cband) of csdid_stats with wboot (columns b se t ll ul, one row per estimate) and its row
++    equations."""
++    stata.run("matrix SSB_c = r(cband)\nglobal SSB_req : roweq SSB_c", quietly=True)
++    return np.asarray(Matrix.get("SSB_c"), dtype=np.float64), Macro.getGlobal("SSB_req").split()
++
++
++def _crit(cb):
++    """The uniform band's critical value, (upper limit - estimate) / se (the same for every row)."""
++    with np.errstate(divide="ignore", invalid="ignore"):
++        c = (cb[:, 4] - cb[:, 0]) / cb[:, 1]
++    c = c[np.isfinite(c)]
++    return float(c[0]) if c.size else float("nan")
++
++
++def _window(lo, hi, universal):
++    """estat event's window option for the event times lo..hi (see the notes on long2 above)."""
++    if universal:
++        lo, hi = (lo + 1 if lo < 0 else lo), (hi + 1 if hi < -1 else hi)
++    return f"window({lo} {hi})"
++
++
++def _labelled(command, band=False):
++    """estat (or csdid_stats) results by label: 'avg' for the GAverage/CAverage/ATT rows, 'pre'/'post'
++    for the event averages, integers for G#/T# (cohort, period) and signed integers for Tm#/Tp# (event
++    time); with b and V of the labelled rows, and with band=True the bootstrap band's critical value."""
+     stata.run(command, quietly=True)
++    crit = _crit(_band()[0]) if band else None
+     b, V, _, names = _matrix("r")
+     out = {}
+     for j, nm in enumerate(names):
+@@ -103,7 +137,7 @@
+         out[key] = j
+     if "avg" not in out and len(names) == 1:        # csdid 1.82's estat simple: one unlabelled column (c1)
+         out = {"avg": 0}
+-    return out, b, V
++    return (out, b, V, crit) if band else (out, b, V)
+ 
+ 
+ def _arrays(idx, b, V):
+@@ -146,9 +180,20 @@
+            + f" pscoretrim({trim!r}) level({round(100 * (1 - alpha))})")
+     lo, hi = event_window
+     universal = base_period == "universal"
++    boot = boot_weights is not None
+ 
+-    # analytic run
+-    stata.run(cmd, quietly=True)
++    # estimation; with the bootstrap, the RIFs are saved too (in TMP: saverif() writes to Stata's
++    # working directory, which is restored before anything else runs)
++    if boot:
++        here = os.getcwd()
++        stata.run(f'cd "{TMP}"', quietly=True)
++        try:
++            stata.run(cmd + f" saverif({RIF}) replace", quietly=True)
++        finally:
++            stata.run(f'cd "{here}"', quietly=True)
++            os.chdir(here)
++    else:
++        stata.run(cmd, quietly=True)
+     b, V, eqs, names = _matrix("e")
+     cells = []
+     for j, (eq, nm) in enumerate(zip(eqs, names)):
+@@ -179,7 +224,7 @@
+     out["att_calendar_avg"], out["se_calendar_avg"] = _one(c_idx, cb_, cV, "avg")
+ 
+     def event(lo_, hi_):
+-        e_idx, eb, eV = _labelled(f"estat event, window({lo_} {hi_})")
++        e_idx, eb, eV = _labelled(f"estat event, {_window(lo_, hi_, universal)}")
+         keys = np.array(sorted(k for k in e_idx if not isinstance(k, str) and not (universal and k == -1)),
+                         dtype=np.int64)
+         rows = np.array([e_idx[k] for k in keys], dtype=np.int64)
+@@ -204,19 +249,21 @@
+             ses.append(float(np.sqrt(c @ sV2[np.ix_(sel, sel)] @ c)))
+     out["att_event_sets"], out["se_event_sets"] = np.array(atts, dtype=np.float64), np.array(ses, dtype=np.float64)
+ 
+-    # bootstrap run (Stata's own Rademacher multipliers, as many draws as given)
+-    if boot_weights is not None:
++    # bootstrap: csdid_stats on the saved RIFs (Stata's own Rademacher multipliers, as many draws as
++    # given; the same seed, so the same draws, for every aggregation)
++    if boot:
+         B = int(np.asarray(boot_weights).shape[1])
+-        stata.run(cmd + f" wboot(reps({B}) wbtype(rademacher) rseed({SEED}))", quietly=True)
+-        b, V, eqs, names = _matrix("e")
+-        sel = [j for j, eq in enumerate(eqs) if eq.lower() != "wgt" and re.fullmatch(r"g" + NUM, eq.lower())
+-               and np.isfinite(b[j])]
+-        out["se_boot_gt"] = np.sqrt(np.diag(V)[sel])
+-        stata.run("scalar SSB_s = e(cband)", quietly=True)
+-        out["crit_gt"] = np.nan
+-        for name, command in (("simple", "estat simple"), ("group", "estat group"), ("calendar", "estat calendar"),
+-                              ("event", f"estat event, window({lo} {hi})")):
+-            idx, bb, VV = _labelled(command)
++        wb = f"wboot(reps({B}) wbtype(rademacher) rseed({SEED}))"
++        stata.run(f'use "{os.path.join(TMP, RIF)}.dta", clear', quietly=True)
++        stata.run(f"csdid_stats attgt, {wb}", quietly=True)
++        cb, req = _band()               # rows: the cells (equations g#), then the weights (wgt)
++        sel = [j for j, eq in enumerate(req) if eq.lower() != "wgt" and re.fullmatch(r"g" + NUM, eq.lower())
++               and np.isfinite(cb[j, 0])]
++        out["se_boot_gt"] = cb[sel, 1]
++        out["crit_gt"] = _crit(cb[sel])
++        for name, command in (("simple", "simple,"), ("group", "group,"), ("calendar", "calendar,"),
++                              ("event", f"event, {_window(lo, hi, universal)}")):
++            idx, bb, VV, crit = _labelled(f"csdid_stats {command} {wb}", band=True)
+             if name == "simple":
+                 out["se_boot_simple"] = _one(idx, bb, VV, "avg")[1]
+                 continue
+@@ -224,7 +271,7 @@
+             if name == "event" and universal:
+                 ses_ = ses_[keys != -1]
+             out[f"se_boot_{name}"] = ses_
+-            out[f"crit_{name}"] = np.nan
++            out[f"crit_{name}"] = crit
+             if name in ("group", "calendar"):
+                 out[f"se_boot_{name}_avg"] = _one(idx, bb, VV, "avg")[1]
+             else:

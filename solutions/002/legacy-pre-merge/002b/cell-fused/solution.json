@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "cell-fused",
+  "task": "002b",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy==2.3.5",
+    "numba==0.62.1"
+  ],
+  "description": "Cell list and aggregation weights from cell sizes; per-cohort Newton fits (logit or tilting, weighted least squares) shared across cells with identical units and warm-started otherwise; one fused Numba pass over units for every cell's influence function and the simple, group, calendar and event-study aggregates (no n_units x n_cells matrices); exact reference operations for numerically-zero or singular cells. Threads: NUMBA_NUM_THREADS."
+}

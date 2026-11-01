@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "task": "001",
+  "workloads": [
+    {
+      "id": 101,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/101.parquet",
+          "size": 2318940,
+          "sha256": "201e4913b9c73bd7edcd8e95c7f6bb9def218c49d3fceb7a07fe6e834b6af787"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 376758
+    },
+    {
+      "id": 102,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/102.parquet",
+          "size": 9803931,
+          "sha256": "b7971b24c3eea3346bf8ce56353eee74d32d1f284324c2c1da8f0993d0a2276b"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 1559804
+    },
+    {
+      "id": 103,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/103.parquet",
+          "size": 12457142,
+          "sha256": "f2cc574843642106646248026dea0abbc1bc16a2206ddbf7554cc547ce6198e2"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 2129562
+    },
+    {
+      "id": 104,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/104.parquet",
+          "size": 42312752,
+          "sha256": "cfe9ef3d96bd46067948dd434800bc909c0234d49168f5b5ff23ecc4d9052d82"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 6757894,
+      "regressor_variants": [
+        5,
+        20,
+        50
+      ]
+    },
+    {
+      "id": 105,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/105.parquet",
+          "size": 42372117,
+          "sha256": "fa2cc697d94d17c53a9c3e8817ba74460dc28c3d6d529650f5d4fd5f25494fc1"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 6757894
+    },
+    {
+      "id": 106,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/106.parquet",
+          "size": 2792550,
+          "sha256": "7a09455fca5cda6fc591aad3a7a04e9eb20971c7283254436d5bb321d013b2d0"
+        }
+      ],
+      "unit": "firm x filing year",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 575304
+    },
+    {
+      "id": 107,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/107.parquet",
+          "size": 12751903,
+          "sha256": "403c610c7eb3608137f7c446d5ad67d70924619dc1cbd2b0541bdd4d79e09030"
+        }
+      ],
+      "unit": "citing firm x cited firm x year",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 3176580
+    },
+    {
+      "id": 108,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/108.parquet",
+          "size": 40100541,
+          "sha256": "ab700562186e211eb43d7c00ab37689ef5befd28a9c4b44ffdc771da1ded9e7b"
+        }
+      ],
+      "unit": "inventor x year",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 7335825
+    },
+    {
+      "id": 109,
+      "suite": "real-smoke",
+      "files": [],
+      "design": "Synthetic SEC-shaped compatibility check only; no performance score or tuning"
+    },
+    {
+      "id": 201,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/201.parquet",
+          "size": 171114497,
+          "sha256": "f22bd182b116c8c359213e1af74f29c9908cd8f4b13ba0eaf4413bfb8895e29a"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 7893490
+    },
+    {
+      "id": 202,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/202.parquet",
+          "size": 171049776,
+          "sha256": "6ddd9e7de12a19e3d12b3005f3b3e4206879f3d424fd5e5375be50b52249e82b"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 7893490
+    },
+    {
+      "id": 203,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/203.parquet",
+          "size": 5899060,
+          "sha256": "e52448d21d6b9eb3e60111160d067d6ec67f4cd3d9f9404d527e7262495ed08b"
+        }
+      ],
+      "unit": "firm x filing year",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 272461
+    },
+    {
+      "id": 204,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/204.parquet",
+          "size": 113820810,
+          "sha256": "500591ac4d7f3219f2ae46e9168a2e6b91e19f55f2d1f12907fbfb86ebfdc5a6"
+        }
+      ],
+      "unit": "citing firm x cited firm x year",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 4828140
+    },
+    {
+      "id": 205,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/205.parquet",
+          "size": 152187589,
+          "sha256": "7fc8f33ce9d7d5f0018e9e94f2706205773c7be175884f406b53ff06ac8b694c"
+        }
+      ],
+      "unit": "inventor x year",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 6805841
+    },
+    {
+      "id": 206,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/206.parquet",
+          "size": 326611417,
+          "sha256": "911fe11007d48cca23dd5a5fce0f6f5142e4b1e78dc62cd70dba6c1cd94320cf"
+        }
+      ],
+      "unit": "inventor x patent",
+      "source": "PVGPATDIS 2026-04-10",
+      "rows": 14651384,
+      "disclosure": "Full A-H sample overlaps development-area patent records; final full-sample evaluation, not wholly unseen data."
+    },
+    {
+      "id": 301,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/301.parquet",
+          "size": 13939911,
+          "sha256": "81b7ddf2b90dad6f085973e4245917fd7c615f92d21c0fca3232a054d64372d8"
+        }
+      ],
+      "unit": "insider x firm x year",
+      "source": "SEC Insider Transactions Data Sets, 2006q1-2026q3",
+      "rows": 1482380
+    },
+    {
+      "id": 302,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/302.parquet",
+          "size": 1766988,
+          "sha256": "fbcf04ec6950323405047e6a63bd5c8af4a4ccab03ee5315556644f0c7ce0e7d"
+        }
+      ],
+      "unit": "firm x year",
+      "source": "SEC Insider Transactions Data Sets, 2006q1-2026q3",
+      "rows": 117609
+    },
+    {
+      "id": 303,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/303.parquet",
+          "size": 15093667,
+          "sha256": "fa8babf642073ff00bc2f6c5728b1361ddbb9e9f7d5e1234b1f84fdb0b9487d7"
+        }
+      ],
+      "unit": "firm pair x year (pairs that ever share an insider; years both firms present)",
+      "source": "SEC Insider Transactions Data Sets, 2006q1-2026q3",
+      "rows": 997243
+    },
+    {
+      "id": 304,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/304.parquet",
+          "size": 1967859,
+          "sha256": "7b1a5048522f2d31dcb20e0937f259dd5e5f1902ac286fbadc9dfd5cb71a89ac"
+        }
+      ],
+      "unit": "firm x year",
+      "source": "SEC Insider Transactions Data Sets, 2006q1-2026q3",
+      "rows": 136729
+    }
+  ]
+}

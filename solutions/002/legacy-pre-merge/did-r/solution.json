@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "name": "did-r",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "rpy2==3.6.9",
+    "numpy==2.3.5",
+    "R 4.5.3 (conda-forge)",
+    "r-did==2.5.1",
+    "r-drdid==1.3.0",
+    "r-data.table==1.18.6.1"
+  ],
+  "description": "Baseline: R did::att_gt (est_method dr, never-treated controls, varying base period, analytic SEs) and aggte (simple, dynamic) via rpy2; pre/post averages from the dynamic influence functions. Threads: data.table only."
+}

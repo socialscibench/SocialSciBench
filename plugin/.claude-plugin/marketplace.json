@@ -1,0 +1,14 @@
+{
+  "name": "turbo-socialsci-local",
+  "description": "turbo-socialsci, built in the SocialSciBench repository",
+  "owner": {
+    "name": "SocialSciBench authors"
+  },
+  "plugins": [
+    {
+      "name": "turbo-socialsci",
+      "source": "./turbo-socialsci",
+      "description": "Fast, exact reghdfe-, csdid- and reclink2-style computations for agents"
+    }
+  ]
+}

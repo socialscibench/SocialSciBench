@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "name": "pyfixest-within",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "pyfixest==0.60.0",
+    "within-py==0.4.0",
+    "numpy==2.3.5",
+    "scipy==1.18.1",
+    "pandas==3.0.6"
+  ],
+  "description": "Baseline: pyfixest.feols with the LSMR demeaner on the `within` Rust backend (additive Schwarz preconditioning, approximate-Cholesky local solvers); reghdfe df_a and small-sample factor computed in the adapter. Threads: RAYON_NUM_THREADS."
+}

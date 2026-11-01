@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "stata-reclink2",
+  "task": "008",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "pandas",
+    "Stata 18 MP with reclink2 (dm0082, external)"
+  ],
+  "description": "Stata reclink2 (Stata Journal dm0082) with the task's command, via pystata in-process (Stata 18 MP, one processor); the using file is written to a temporary .dta inside the timed call"
+}

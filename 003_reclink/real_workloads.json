@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "task": "003",
+  "workloads": [
+    {
+      "id": 101,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/101_master.parquet",
+          "size": 57329,
+          "sha256": "439de81a475d4682bd18551fbf7e839f907a0fc3de41bd3c20d6e92c6b9bb9a5"
+        },
+        {
+          "path": "development/101_using.parquet",
+          "size": 2134524,
+          "sha256": "d78f664c33b1fd2aed06cc83f58de7f3957d7e263009f0e8d291b71b2c29bfd9"
+        }
+      ],
+      "design": "2,000 second-draw PPP borrowers in Oregon -> all Oregon first-draw borrowers",
+      "n_master": 2000,
+      "n_using": 84657
+    },
+    {
+      "id": 102,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/102_master.parquet",
+          "size": 146594,
+          "sha256": "21c07aa79c75f46b23899fe56735041533c6004f08dce04a314df4436a5f977f"
+        },
+        {
+          "path": "development/102_using.parquet",
+          "size": 394572,
+          "sha256": "e4de0ae0590b7a470622c216b7948d35e0a468d526a1a74c0537d3a2c89186dc"
+        }
+      ],
+      "design": "all second-draw PPP borrowers in Vermont -> all Vermont first-draw borrowers",
+      "n_master": 5680,
+      "n_using": 16016
+    },
+    {
+      "id": 103,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/103_master.parquet",
+          "size": 340584,
+          "sha256": "186fc794cce16d6c506fa4a0247ee7f2386e797280ba2afe7abb1e54dade09d2"
+        },
+        {
+          "path": "development/103_using.parquet",
+          "size": 2468972,
+          "sha256": "df037c0e60c9c2e6b26cb3d6b98e80937bcb2913bced32d13d257f4bad87a7b2"
+        }
+      ],
+      "design": "first-draw PPP nonprofit borrowers in New England -> IRS EO BMF organizations in New England",
+      "n_master": 12033,
+      "n_using": 101179
+    },
+    {
+      "id": 104,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/104_master.parquet",
+          "size": 14824,
+          "sha256": "235afaabf2d934086f4f29f4e0f1e6e082ebcf762159a1c47020822931fe8563"
+        },
+        {
+          "path": "development/104_using.parquet",
+          "size": 11355226,
+          "sha256": "8811e3774fce5dcfc45bd9d9b0a0bf4249f8fb1ecf98e2ed1272fab3c7a97688"
+        }
+      ],
+      "design": "500 second-draw PPP borrowers in Chicago -> all Illinois first-draw borrowers",
+      "n_master": 500,
+      "n_using": 469711
+    },
+    {
+      "id": 105,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/105_master.parquet",
+          "size": 54918,
+          "sha256": "98a70a3645efd6ade37550b0d94eeb09fa9a7e79d2a3c1531f6c0adbe5bad5d4"
+        },
+        {
+          "path": "development/105_using.parquet",
+          "size": 4394137,
+          "sha256": "121ff8c73bdb53d768939ef7b40ef2ea80712ae3b7473017d113cff299f8f67d"
+        }
+      ],
+      "design": "2,000 second-draw PPP borrowers in Tennessee with a franchise name or in accommodation and food services (NAICS 72) -> all Tennessee first-draw borrowers",
+      "n_master": 2000,
+      "n_using": 180402
+    },
+    {
+      "id": 106,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/106_master.parquet",
+          "size": 98088,
+          "sha256": "50c782b6d0622828e8ea6a85f3e7889cde4b1f7105de1104b739f1ecca0fe942"
+        },
+        {
+          "path": "development/106_using.parquet",
+          "size": 394572,
+          "sha256": "e4de0ae0590b7a470622c216b7948d35e0a468d526a1a74c0537d3a2c89186dc"
+        }
+      ],
+      "design": "as 102, with the master's street address and ZIP emptied (name, city and state only)",
+      "n_master": 5680,
+      "n_using": 16016
+    },
+    {
+      "id": 107,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/107_master.parquet",
+          "size": 53699,
+          "sha256": "c6d28e3340e7bc016844eccfce31c06cea4fdb244ee8db001bc82d8e6760ffce"
+        },
+        {
+          "path": "development/107_using.parquet",
+          "size": 4078513,
+          "sha256": "b0da7425c14d306a6c46dae4dfa20c7f45333ae84bd066dfd43a8a8d008b88c9"
+        }
+      ],
+      "design": "2,000 second-draw PPP sole proprietors, self-employed individuals and independent contractors in Louisiana -> all Louisiana first-draw borrowers",
+      "n_master": 2000,
+      "n_using": 169475
+    },
+    {
+      "id": 108,
+      "suite": "real-development",
+      "files": [
+        {
+          "path": "development/108_master.parquet",
+          "size": 168691,
+          "sha256": "dd64bf6e3f40a908ff74b7a408388a70f82f1e46d1054fb8a03da20435be3bcd"
+        },
+        {
+          "path": "development/108_using.parquet",
+          "size": 237172669,
+          "sha256": "4d6ed49e088c47256d8ee4f0899d5b384f99840a9eb0913bc6ef7a742c0b2e6b"
+        }
+      ],
+      "design": "5,000 second-draw PPP borrowers nationwide -> all first-draw borrowers nationwide",
+      "n_master": 5000,
+      "n_using": 8612370
+    },
+    {
+      "id": 201,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/201_master.parquet",
+          "size": 64644,
+          "sha256": "7fba70d9cbe46abbd9f1f30e21b5d4a2de35da2053aff71387b0496bb7fa4acf"
+        },
+        {
+          "path": "heldout/201_using.parquet",
+          "size": 5183677,
+          "sha256": "f4eb3fd7f49b7b4f3cb8ef0dc608a84074a560a13aa2651b617bed1d459981be"
+        }
+      ],
+      "design": "2,000 OSHA-inspected establishments in Minnesota -> all EPA FRS facilities in Minnesota",
+      "n_master": 2000,
+      "n_using": 249328
+    },
+    {
+      "id": 202,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/202_master.parquet",
+          "size": 15412,
+          "sha256": "fb1643a220a704930bd8b125b5e933b8f55fe0b7493a08c50985a793ae4c647c"
+        },
+        {
+          "path": "heldout/202_using.parquet",
+          "size": 8782881,
+          "sha256": "5f9eeab5745fc22bfd2815a2727e858712b46482d163203b0a4dcba1acd4a6cf"
+        }
+      ],
+      "design": "500 OSHA-inspected establishments in Houston -> all EPA FRS facilities in Texas",
+      "n_master": 500,
+      "n_using": 340776
+    },
+    {
+      "id": 203,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/203_master.parquet",
+          "size": 56728,
+          "sha256": "2578f30cd2e01b3a5621a0545d113602c3060149cd9937d52f894687448306cb"
+        },
+        {
+          "path": "heldout/203_using.parquet",
+          "size": 2219273,
+          "sha256": "553b91d2e871f393acaf4be8a44ce45c4f66fc13958afc0e06ac5a7cd93149a8"
+        }
+      ],
+      "design": "2,000 OSHA-inspected manufacturing establishments (NAICS 31-33) in Ohio -> all EPA FRS facilities in Ohio",
+      "n_master": 2000,
+      "n_using": 104369
+    },
+    {
+      "id": 204,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/204_master.parquet",
+          "size": 42931,
+          "sha256": "dc70ef4fc2b7aed26d8dcc70216ac8abfe14b645516510c29373c035a6b6e10e"
+        },
+        {
+          "path": "heldout/204_using.parquet",
+          "size": 2208397,
+          "sha256": "9b4004aed3a31ff2b49e0bb3a27e8c97123215f2b01893f71e7ff7beda58dcdc"
+        }
+      ],
+      "design": "2,000 OSHA-inspected establishments in Washington with street address and ZIP emptied -> all EPA FRS facilities in Washington",
+      "n_master": 2000,
+      "n_using": 101419
+    },
+    {
+      "id": 205,
+      "suite": "real-heldout",
+      "files": [
+        {
+          "path": "heldout/205_master.parquet",
+          "size": 177450,
+          "sha256": "1daf5e70967a4c2a54aa59130ca2b2d278127a5d1558257e02e07402d711fe44"
+        },
+        {
+          "path": "heldout/205_using.parquet",
+          "size": 129903076,
+          "sha256": "e0d30ddc611221219bea253843e3307174998e6e88e6887cff6e654a93bfd5a3"
+        }
+      ],
+      "design": "5,000 OSHA-inspected establishments nationwide -> all EPA FRS facilities nationwide",
+      "n_master": 5000,
+      "n_using": 5342266
+    }
+  ]
+}

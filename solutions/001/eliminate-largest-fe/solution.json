@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "eliminate-largest-fe",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "scipy",
+    "numba"
+  ],
+  "description": "Eliminates the fixed effect with the most levels in closed form and solves the reduced normal equations on the remaining levels (dense, Jacobi-PCG or exact grounded sparse factorization, chosen by graph structure); two passes over the data with Numba kernels; single-threaded."
+}

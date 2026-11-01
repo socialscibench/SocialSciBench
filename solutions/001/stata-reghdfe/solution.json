@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "name": "stata-reghdfe",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "Stata 18 MP (pystata)",
+    "reghdfe 6.14.1",
+    "ftools 2.50.0",
+    "require 1.4.0",
+    "numpy==2.3.5",
+    "pandas==3.0.6"
+  ],
+  "description": "Baseline: Stata reghdfe 6.14.1 (the command the task specifies) via pystata; data passed as a temporary .dta file. Threads: Stata MP set processors."
+}

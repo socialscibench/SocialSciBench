@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "name": "fixest-r",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "rpy2==3.6.9",
+    "numpy==2.3.5",
+    "scipy==1.18.1",
+    "pandas==3.0.6",
+    "R 4.5.3 (conda-forge)",
+    "r-fixest==0.14.2",
+    "r-data.table==1.18.6.1"
+  ],
+  "description": "Baseline: R fixest::feols (fixed-point demeaning with Irons-Tuck acceleration) via rpy2; reghdfe df_a and small-sample factor computed in the adapter. Threads: fixest nthreads = OMP_NUM_THREADS."
+}

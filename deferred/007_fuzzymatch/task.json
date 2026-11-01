@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "contract_version": 2,
+  "id": "007",
+  "directory": "007_fuzzymatch",
+  "prompt_files": [
+    "task.md",
+    "reference.py",
+    "workloads.py",
+    "task.json"
+  ],
+  "reference_entry_point": "reference.py::run",
+  "workload_entry_point": "workloads.py::generate",
+  "workload_catalog": "workloads.py::WORKLOADS",
+  "validator": "harness.validation::validate",
+  "adapter": "harness.cases::generate_inputs",
+  "tolerances": {
+    "relative_floor": 1e-12,
+    "score_rtol": 1e-10
+  },
+  "default_workload_ids": [
+    1
+  ],
+  "input_policy": "read_only",
+  "timing": "wall-clock run call; host-ready outputs; synchronization included; setup and validation excluded",
+  "development_entry_point": "harness.cases::development_cases"
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "r-port",
+  "task": "008",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "rpy2==3.5.17",
+    "R 4.1.2 with data.table 1.18.6.1 and stringi 1.8.9 (external)"
+  ],
+  "description": "the repository's R port of reclink2 (baselines/008_recordlinkage/bench_r.R: data.table joins, stringi bigram scores), via rpy2 in-process, data.table one thread"
+}

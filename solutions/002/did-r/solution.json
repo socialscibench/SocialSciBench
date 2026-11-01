@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "name": "did-r",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "R 4.5.3",
+    "did 2.5.1",
+    "DRDID 1.3.0",
+    "data.table",
+    "rpy2"
+  ],
+  "description": "Baseline: R did 2.5.1 with DRDID 1.3.0 via rpy2 for the task's balanced csdid201-rule workloads (did's rules); DRDID estimators with the task's trimming level behind did's own overlap and conditioning checks; the universal base's reference cells and e = -1 dropped; influence-function aggregates; with multipliers, the same estimation runs did's multiplier bootstrap, aggte the aggregations' and mboot the pre/post averages'."
+}

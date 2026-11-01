@@ -1,0 +1,7 @@
+-r requirements.txt
+pytest
+# plugin/tests: the engine's dependencies, as pinned in plugin/turbo-socialsci/engine/pyproject.toml
+numba==0.62.1
+llvmlite==0.45.1
+scipy==1.18.1
+threadpoolctl==3.7.0

@@ -1,0 +1,496 @@
+--- frozen/solutions/002/cell-fused/solution.py
++++ engine/core/did_speed.py
+@@ -1,3 +1,5 @@
++# turbo-socialsci core: the frozen SocialSciBench candidate solutions/002/cell-fused (freeze of 2026-10-26)
++# with the plugin's changes (plugin/README.md; diff: plugin/tools/patches/did_speed.diff).
+ """Task 002 candidate "cell-fused" (version 3, for the combined task of 2026-10-25): Callaway &
+ Sant'Anna (2021) staggered difference-in-differences as reference.run computes it under csdid
+ 1.81's or 2.0.1's rules: never or not-yet-treated controls, sampling weights, unbalanced panels
+@@ -48,10 +50,14 @@
+ from numba import types
+ from numba.extending import intrinsic
+ 
++from ._draws import GAMMA, M1, M2, n_words, seed_key
++from ._signs import signed_sums
++
+ CAP = 1.0 - 1e-6             # drdid caps the propensity score below 1
+ TOL = 1e-10                  # the reference's Newton stopping rule (largest step)
+ METHODS = ("dripw", "reg", "ipw", "stdipw", "drimp")
+ RULES = ("csdid181", "csdid201")
++BOOT_TABLES = ("gt", "event", "group", "calendar")
+ DRIPW, REG, IPW, STDIPW, DRIMP = range(5)
+ OK, EXACT, SKIP = 0, 1, 3    # cell states: estimated here, recomputed exactly, not estimated (overlap)
+ OVERLAP = 0.999              # csdid 2.0.1's overlap cut on the unweighted logit score
+@@ -217,7 +223,7 @@
+     return types.int64(types.float64), codegen
+ 
+ 
+-@nb.njit(inline="always", error_model="numpy")
++@nb.njit(cache=True, inline="always", error_model="numpy")
+ def _exp(x):
+     """exp(x) to about 1 ulp for |x| <= 708 (clamped outside), branch-free so loops vectorize:
+     Cody-Waite reduction by ln 2, degree-13 Taylor polynomial, exponent set from integer bits.
+@@ -243,12 +249,12 @@
+     return p * _as_f64((_as_i64(t) + 1023) << 52)
+ 
+ 
+-@nb.njit(inline="always", error_model="numpy")
++@nb.njit(cache=True, inline="always", error_model="numpy")
+ def _expit(v):
+     return 1.0 / (1.0 + _exp(-v))
+ 
+ 
+-@nb.njit(inline="always", error_model="numpy")
++@nb.njit(cache=True, inline="always", error_model="numpy")
+ def _member(Gi, g, m, notyet):
+     return Gi == g or Gi == 0 or (notyet and Gi > m)
+ 
+@@ -257,7 +263,7 @@
+ # Small dense linear algebra (k + 1 <= a dozen unknowns)
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _chol(A, L):
+     """Cholesky factor of the symmetric matrix A into L; False unless A is numerically positive definite."""
+     k = A.shape[0]
+@@ -276,7 +282,7 @@
+     return True
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _chol_solve(L, b, x):
+     k = L.shape[0]
+     for i in range(k):
+@@ -291,7 +297,7 @@
+         x[i] = s / L[i, i]
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _chol_inv(L, out):
+     k = L.shape[0]
+     e = np.zeros(k)
+@@ -304,7 +310,7 @@
+             out[i, j] = col[i]
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _matvec(A, v, out):
+     k = A.shape[0]
+     for i in range(k):
+@@ -318,7 +324,7 @@
+ # Pass 1: cells and their sizes
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _count_cells(G, obs, w, cg, ct, cb, cm, notyet):
+     C, N = cg.size, G.size
+     n = np.zeros(C, np.int64)
+@@ -375,7 +381,7 @@
+ # Pass 2: estimation
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _gather(G, obs, y, X3, w, g, t, b, p, m, notyet, wbar, idx, Xg, D, ws, dy):
+     N = G.size
+     k1 = X3.shape[2]
+@@ -392,14 +398,14 @@
+             j += 1
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _regather_dy(y, idx, t, b, dy):
+     for j in range(idx.size):
+         i = idx[j]
+         dy[j] = y[i, t] - y[i, b]
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _index(Xg, beta, lo, m, eta):
+     k1 = Xg.shape[0]
+     for j in range(m):
+@@ -411,7 +417,7 @@
+             eta[j] += xk[j] * bk
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _logit_weights(eta, D, ws, lo, m, wp, rr):
+     for j in range(m):
+         p = _expit(eta[j])
+@@ -420,7 +426,7 @@
+         rr[j] = wj * (D[lo + j] - p)
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _ipt_weights(eta, D, ws, lo, m, wp, rr):
+     for j in range(m):
+         e = _exp(eta[j])
+@@ -430,7 +436,7 @@
+         rr[j] = wj * (D[lo + j] - c * e)
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _accumulate(Xg, lo, m, wp, rr, H, g):
+     k1 = Xg.shape[0]
+     for a in range(k1):
+@@ -447,7 +453,7 @@
+             H[a, c] += s
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _hess_grad(Xg, D, ws, beta, tilt, H, g, eta, wp, rr):
+     """Hessian (positive definite form) and gradient of the weighted logit (tilt False) or of the
+     inverse-probability-tilting objective sum w [D x'b - (1 - D) exp(x'b)] (tilt True)."""
+@@ -467,7 +473,7 @@
+             H[c, a] = H[a, c]
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _ipt_objective(Xg, D, ws, v, eta):
+     k1, n = Xg.shape
+     f = 0.0
+@@ -480,7 +486,7 @@
+     return f
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _newton(Xg, D, ws, beta, tilt, maxiter, V):
+     """Newton-Raphson from beta (updated in place) with the reference's stopping rule (largest step
+     below TOL); for tilting, the reference's step halving. Returns 0 (converged), 1 (not converged)
+@@ -526,7 +532,7 @@
+     return status
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _wls_matrix(Xg, D, sw, A):
+     """A = sum over comparison units (D == 0) of sw x x'."""
+     k1, n = Xg.shape
+@@ -545,7 +551,7 @@
+             A[c, a] = s
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _wls_rhs(Xg, D, sw, dy, rhs):
+     k1, n = Xg.shape
+     cw = np.empty(n)
+@@ -559,7 +565,7 @@
+         rhs[a] = s
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _scores(Xg, bp, D, trim, ps, keep):
+     """Capped propensity scores and trimming flags (comparison units scoring above trim) of the
+     gathered units. Returns the largest raw score, the largest absolute index, and whether a
+@@ -587,14 +593,14 @@
+     return mx, big, near
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _overlap_state(mx):
+     if abs(mx - OVERLAP) <= NEAR:
+         return EXACT
+     return SKIP if mx >= OVERLAP else OK
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _share_state(D):
+     """Overlap check without covariates: the cohort's share of the cell's units."""
+     s = 0.0
+@@ -603,7 +609,7 @@
+     return SKIP if s / D.size >= OVERLAP else OK
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _overlap_fit(Xg, D, bo, warm, Vo):
+     """csdid 2.0.1's overlap check by its own unweighted logit (warm-started from bo, updated on
+     success). Returns (state, fitted). A fit that fails here, or a warm-started fit whose index is
+@@ -632,7 +638,7 @@
+     return _overlap_state(mx), True
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _constants(method, Xg, D, ws, dy, ps, keep, br, inv, V, U, V2, sc):
+     """Cell constants of the influence function (see _units). sc: a (ATT), eta_t, eta_c, mean w1,
+     mean w0. Per-unit quantities first, then sums over units for each covariate (contiguous, so
+@@ -719,7 +725,7 @@
+     sc[0], sc[1], sc[2], sc[3], sc[4] = eta_t - eta_c, eta_t, eta_c, mw1, mw0
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _invariants(method, Xg, D, ws, ps, keep, w1, w0, M1, M3, Mxx):
+     """For cells sharing one fit: the per-unit weights w1 = ws D and w0 (ws ps / (1 - ps) for the
+     comparison units kept after trimming: the comparison weights, or drimp's comparison factor)
+@@ -753,7 +759,7 @@
+     return s1, s0
+ 
+ 
+-@nb.njit(error_model="numpy", fastmath=FAST)
++@nb.njit(cache=True, error_model="numpy", fastmath=FAST)
+ def _dy_sums(Xg, D, sw, w1, w0, dy, q, rhs, t0, t1):
+     """The sums that depend on the outcome change: returns (sum w1 dy, sum w0 dy) and fills
+     q = sum w0 dy x and rhs = sum over comparison units of sw dy x (the regression's right side)."""
+@@ -776,7 +782,7 @@
+     return a1, a0
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _shared_constants(method, n, s1, s0, M1, M3, Mxx, a1, a0, q, br, inv, V, U, V2, sc):
+     """_constants from the shared sums (the same quantities: v = dy - x'br is expanded, e.g.
+     sum w0 v x = q - Mxx br)."""
+@@ -819,7 +825,7 @@
+     sc[0], sc[1], sc[2], sc[3], sc[4] = eta_t - eta_c, eta_t, eta_c, mw1, mw0
+ 
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _estimate(G, obs, y, X3, w, cg, ct, cb, cp, cm, cn, csw, key, coh_ptr, method, notyet, trim, overlap,
+               unweighted):
+     """Cell constants for every cell; cells are processed per cohort, in order, so that cells with
+@@ -976,7 +982,7 @@
+ # Pass 3: influence functions of every cell and every aggregate, one pass over units
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _units(b0, b1, GB, XB, YB, OB, WB, VB, brow0, bval, cg, ct, cb, cp, cm, method, notyet, r201, trim,
+            BR, BP, U, V2, SC, exrow, EXD, agg, alpha, beta, inv_s, Dm, n_agg, S1, S2, gcol, wcol, inv_n, buf):
+     """For the blocks b0 .. b1 - 1 (LANE lanes of one cohort each) and every cell the block's cohort
+@@ -1171,7 +1177,7 @@
+ # Pass 4 helpers: column statistics and bootstrap order statistics
+ # ----------------------------------------------------------------------------------------------
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _col_stats(Dm, ncol):
+     """Column means and centered sums of squares of the first ncol columns (two passes over rows)."""
+     N = Dm.shape[0]
+@@ -1203,7 +1209,7 @@
+     return mean, css
+ 
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _rows_add(G, rows, P):
+     """G[rows[j]] += P[j] (distinct rows)."""
+     for j in nb.prange(rows.size):
+@@ -1213,7 +1219,7 @@
+             g[r] += pj[r]
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _select(a, lo, hi, k):
+     """Quickselect: rearranges a[lo:hi] so that a[k] is its (k - lo)-th smallest value, with
+     a[lo:k] <= a[k] <= a[k + 1:hi] (Hoare partitions, median-of-three pivots)."""
+@@ -1238,7 +1244,7 @@
+             return
+ 
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _quartiles(Dr, i25, i75):
+     """Order statistics i25 <= i75 (0-based) of every row (selection on a copy of each row)."""
+     K, B = Dr.shape
+@@ -1254,14 +1260,14 @@
+     return q25, q75
+ 
+ 
+-@nb.njit(error_model="numpy")
++@nb.njit(cache=True, error_model="numpy")
+ def _kth(x, k):
+     a = x.copy()
+     _select(a, 0, a.size, k)
+     return a[k]
+ 
+ 
+-@nb.njit(parallel=True, error_model="numpy")
++@nb.njit(cache=True, parallel=True, error_model="numpy")
+ def _tmax(Dr, se):
+     """max over rows k of |Dr[k, r] / se[k]| for every draw r, NaN if any ratio is NaN (np.max)."""
+     K, B = Dr.shape
+@@ -1331,8 +1337,42 @@
+     return np.flatnonzero(s), r, float(mu[0]), float(np.sqrt(((two - mu) ** 2).sum(0))[0] / N)
+ 
+ 
++_G64 = np.uint64(GAMMA)
++_M164 = np.uint64(M1)
++_M264 = np.uint64(M2)
++
++
++@nb.njit(cache=True, parallel=True)
++def _rademacher_nb(key, units, nwords, b0, b1, out):
++    """_draws.rademacher, bit for bit: out[r, b - b0] = the multiplier of draw b for unit units[r]."""
++    one = np.uint64(1)
++    nw = np.uint64(nwords)
++    for r in nb.prange(units.size):
++        u = np.uint64(units[r])
++        b = b0
++        while b < b1:
++            word = b // 64
++            z = key + (u * nw + np.uint64(word) + one) * _G64
++            z = (z ^ (z >> np.uint64(30))) * _M164
++            z = (z ^ (z >> np.uint64(27))) * _M264
++            z = z ^ (z >> np.uint64(31))
++            stop = min(b1, (word + 1) * 64)
++            for bb in range(b, stop):
++                out[r, bb - b0] = 2.0 * np.float64((z >> np.uint64(bb - word * 64)) & one) - 1.0
++            b = stop
++
++
++def _drawn_product(buf, rows, key, nwords, B):
++    """buf.T @ V, V the multipliers [rows, B] drawn here (plugin addition; 0.2: as tables of signed
++    sums, without forming V: core/_signs.py)."""
++    return signed_sums(buf, rows, key, nwords, B)
++
++
+ def run(y, X, gvar, w=None, control="never", method="dripw", event_window=(-5, 5),
+-        base_period="varying", trim=1.0, boot_weights=None, alpha=0.05, event_sets=None, rules="csdid181"):
++        base_period="varying", trim=1.0, boot_weights=None, alpha=0.05, event_sets=None, rules="csdid181",
++        n_boot=None, seed=1, boot_tables=None):
++    if boot_weights is not None and n_boot is not None:
++        raise ValueError("give either boot_weights or n_boot, not both")
+     if control not in ("never", "notyet"):
+         raise ValueError("control must be 'never' or 'notyet'")
+     if method not in METHODS:
+@@ -1350,9 +1390,10 @@
+     if varying:                      # a missing covariate makes the unit-period unobserved
+         y = np.where(np.isfinite(X).all(2), y, np.nan)
+     units, obs = _sample(y, gvar, control)
+-    y = np.ascontiguousarray(y[units])
+-    gvar, w = gvar[units], w[units]
+-    X = X[units]
++    if not units.all():                              # plugin 0.2: no copies when every unit is used
++        y = np.ascontiguousarray(y[units])
++        gvar, w = gvar[units], w[units]
++        X = X[units]
+     N = int(units.sum())
+     T = obs.shape[1]
+     k = X.shape[-1]
+@@ -1497,15 +1538,22 @@
+     inv_n = 1.0 / n
+     args = (GB, XB, YB, OB, WB, VB, brow0, bval, cg, ct, cb, cp, cm, mcode, notyet, r201, float(trim),
+             BR, BP, U, V2, SC, exrow, EXD, agg, alpha_c, beta_c, 1.0 / S, Dm, n_agg, S1, S2)
+-    boot = boot_weights is not None
+-    if not boot:
++    boot = boot_weights is not None or n_boot is not None
++    # plugin addition (0.2): without the gt table, the aggregates' draws come from their own influence
++    # functions (section 4) instead of the cells' draws
++    want = BOOT_TABLES if boot_tables is None else tuple(boot_tables)
++    cell_draws = boot and "gt" in want
++    if not cell_draws:
+         _units(0, nblk, *args, -np.ones(C, np.int64), -np.ones(C, np.int64), inv_n, np.zeros((0, 0)))
+     else:
+         # per chunk of one cohort's units: the influence functions of the cells they belong to (and the
+-        # units' weights, for the cohort weights' terms, and ones) times the chunk's multipliers (BLAS)
+-        v = np.asarray(boot_weights)
++        # units' weights, for the cohort weights' terms, and ones) times the chunk's multipliers (BLAS);
++        # without boot_weights the multipliers are drawn here (plugin addition)
++        v = np.asarray(boot_weights) if boot_weights is not None else None
+         rows_all = np.flatnonzero(units)[unit_order]     # multiplier row of each unit in cohort order
+-        Bd = v.shape[1]
++        Bd = v.shape[1] if v is not None else int(n_boot)
++        if v is None:
++            key, nwords = np.uint64(seed_key(seed)), n_words(Bd)
+         Ggt = np.zeros((C, Bd))                          # sum over each cell's units of v (r - a) / n
+         per_cell = not (r201 or balanced)                # 1.81, unbalanced: weights of the units in the cell
+         WVc = np.zeros((C if per_cell else 0, Bd))       # sum of v w over the cell's (or cohort's) units
+@@ -1533,7 +1581,10 @@
+                 if nw and not per_cell:
+                     buf[:, m + 1] = w[unit_order[r0:r1]]
+                 _units(c0, c1, *args, gcol, wcol, inv_n, buf)
+-                prod = buf.T @ v[rows_all[r0:r1]].astype(np.float64)
++                if v is not None:
++                    prod = buf.T @ v[rows_all[r0:r1]].astype(np.float64)
++                else:
++                    prod = _drawn_product(buf, rows_all[r0:r1], key, nwords, Bd)
+                 if contiguous:
+                     Ggt[member[0]:member[-1] + 1] += prod[:m]
+                 elif m:
+@@ -1619,7 +1670,7 @@
+                                                else (float("nan"), float("nan")))
+ 
+     # 4. bootstrap statistics: draws of every table (one row per column) and of the single estimates
+-    if boot:
++    if boot and cell_draws:
+         # sums over units of v times each aggregate column of Dm: the cells' sums with the aggregation
+         # weights alpha, plus the cohort weights' terms (beta / S times sums of v w), and the 2.0.1
+         # unit-level cohort weights; then centered as the reference centers every column
+@@ -1638,14 +1689,52 @@
+         if n_w:
+             Graw = np.vstack([Graw, WVg[np.searchsorted(cohorts, groups)]])
+         Dagg = (Graw - mean[:, None] * Gones) / N                          # centered columns
++    elif boot:
++        # plugin addition (0.2): the draws of the aggregate columns the requested tables need (and of
++        # the simple aggregate), from the units' aggregate influence functions in Dm
++        v = np.asarray(boot_weights) if boot_weights is not None else None
++        Bd = v.shape[1] if v is not None else int(n_boot)
++        rows_all = np.flatnonzero(units)[unit_order]     # multiplier row of each row of Dm
++        need = {0}
++        if "event" in want:
++            need |= set(esel.tolist())
++        if "group" in want:
++            need |= set(gsel.tolist()) | set(range(n_agg, n_agg + n_w))
++        if "calendar" in want:
++            need |= set(psel.tolist())
++        cols = np.array(sorted(need), dtype=np.int64)
++        sub = Dm[:, cols] - mean[cols]                    # centered as the reference centers every column
++        if v is None:
++            prod = _drawn_product(sub, rows_all, np.uint64(seed_key(seed)), n_words(Bd), Bd)
++        else:
++            prod = sub.T @ v[rows_all].astype(np.float64)
++        del sub
++        Dagg = np.zeros((n_ext - 1, Bd))
++        Dagg[cols] = prod / N
++        Ggt = None
++    if boot:
+         tables = dict(gt=Ggt, group=Dagg[gsel], calendar=Dagg[psel], event=Dagg[esel])
+         for name, Dr in tables.items():
+-            out[f"se_boot_{name}"], out[f"crit_{name}"] = _boot_stats(np.ascontiguousarray(Dr), alpha,
+-                                                                       name != "gt", rules)
++            if name in want:
++                out[f"se_boot_{name}"], out[f"crit_{name}"] = _boot_stats(np.ascontiguousarray(Dr), alpha,
++                                                                           name != "gt", rules)
++            else:
++                out[f"se_boot_{name}"] = np.full(C if Dr is None else Dr.shape[0], np.nan)
++                out[f"crit_{name}"] = float("nan")
++        # plugin addition: the event-study critical value over the event times with Pre_avg and
++        # Post_avg (the rows of csdid 1.81's estat event table)
++        avgs = [c @ Dagg for c, has in ((c_pre, pre.any()), (c_post, pst.any())) if has]
++        try:
++            out["crit_event_with_avgs"] = (_boot_stats(np.ascontiguousarray(np.vstack([Dagg[esel]] + avgs)),
++                                                       alpha, True, rules)[1] if "event" in want else float("nan"))
++        except IndexError:                               # no finite draw of the maximum
++            out["crit_event_with_avgs"] = float("nan")
+         c_simple = np.zeros(n_ext - 1)
+         c_simple[0] = 1.0
+-        singles = dict(simple=c_simple, group_avg=c_ga, calendar_avg=c_cal,
+-                       pre_avg=c_pre if pre.any() else None, post_avg=c_post if pst.any() else None)
++        ev = "event" in want
++        singles = dict(simple=c_simple, group_avg=c_ga if "group" in want else None,
++                       calendar_avg=c_cal if "calendar" in want else None,
++                       pre_avg=c_pre if (pre.any() and ev) else None, post_avg=c_post if (pst.any() and ev) else None)
+         for name, coef in singles.items():
+             if coef is None:
+                 out[f"se_boot_{name}"] = np.nan

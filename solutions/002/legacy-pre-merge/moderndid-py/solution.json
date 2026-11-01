@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "moderndid-py",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "moderndid==0.3.1",
+    "polars==2.0.0",
+    "statsmodels==0.15.0",
+    "numpy==2.3.5"
+  ],
+  "description": "Baseline: moderndid att_gt (dr, never-treated, varying base period) and aggte (simple, dynamic); pre/post averages from the dynamic influence functions. Threads: n_jobs = OMP_NUM_THREADS."
+}

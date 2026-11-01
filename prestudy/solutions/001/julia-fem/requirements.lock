@@ -1,0 +1,28 @@
+# Shared comparison environment solutions/001/.venv: CPython 3.12.13, macOS 15.7.3 x86_64 (Intel i7-8700B).
+# xhdfe is built from the checksum-pinned release (see build.md); R 4.1.2 + fixest 0.14.2 and Julia 1.13.1 + FixedEffectModels 2.1.0 are external.
+cffi==2.1.1
+cmake==4.4.4
+filelock==3.32.7
+jinja2==3.1.6
+juliacall==0.9.36
+juliapkg==0.1.27
+llvmlite==0.45.1
+markupsafe==3.0.4
+numba==0.62.1
+numpy==2.3.5
+packaging==26.3
+pandas==3.0.6
+pycparser==3.11
+python-dateutil==2.9.0.post0
+rpy2==3.5.17
+scipy==1.18.1
+semver==3.1.0
+setuptools==84.0.0
+six==1.17.0
+threadpoolctl==3.7.0
+tomli==2.5.0
+tomlkit==0.15.2
+tzlocal==5.4.4
+wheel==0.48.0
+within-py==0.4.0
+xhdfe==2.28.1.20260929  # built from the checksum-pinned release tarball; see build.md

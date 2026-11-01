@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "cell-fused",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy==2.3.5",
+    "numba==0.62.1"
+  ],
+  "description": "csdid 1.81/2.0.1 rules with every option of the combined task: cell list and aggregation weights from cell sizes (cohort tallies on balanced panels); per-cohort Newton fits (logit, tilting, csdid 2.0.1's overlap logit, weighted least squares) shared across cells with identical units and covariates, with hoisted sums, and warm-started otherwise; one fused Numba pass over units for every cell's influence function and every aggregate (no n_units x n_cells matrices); multiplier bootstrap by member-aware BLAS products per cohort chunk, aggregate draws derived from cell draws, quickselect order statistics; exact reference operations for singular, boundary or degenerate cells. Threads: NUMBA_NUM_THREADS and BLAS, in separate phases."
+}

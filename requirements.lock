@@ -1,0 +1,8 @@
+# Tested with CPython 3.14.3 on macOS; resolve requirements.txt for other Python versions.
+numpy==2.5.4
+scipy==1.18.1
+pandas==3.0.6
+python-dateutil==2.9.0.post0
+six==1.17.0
+threadpoolctl==3.7.0
+pyarrow==26.0.0

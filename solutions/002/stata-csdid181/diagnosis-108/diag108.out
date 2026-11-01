@@ -1,0 +1,31 @@
+reference: 0.8 s, 812 cells, 812 logits
+csdid 1.82 (analytic part): 205.5 s, 812 cells
+cells failing 1e-6: 29 of 812; above 1e-3: 29; above 0.1: 28
+failing cells by cohort: {25: 29} ; cells per cohort among them: {25: 29}
+  failing: max control odds median 0.393 (max 0.469); Hessian condition median 8.31e+61; controls median 185
+  passing: max control odds median 0.366 (max 3.87); Hessian condition median 3.66e+03; controls median 210
+worst cells (g, t): error, reference ATT and SE, csdid ATT, controls, treated, max control score, odds, condition
+  (np.int64(25), np.int64(6)): 0.845, -1.631 (0.559), -0.2529, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(10)): 0.845, -1.273 (0.54), -0.1974, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(4)): 0.845, -1.425 (0.519), -0.2211, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(7)): 0.845, -1.582 (0.642), -0.2453, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(1)): 0.845, -1.183 (0.569), -0.1835, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(12)): 0.845, -1.19 (0.677), -0.1846, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(11)): 0.845, -1.26 (0.687), -0.1953, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(2)): 0.845, -1.525 (0.54), -0.2365, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(14)): 0.845, -1.316 (0.687), -0.204, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(5)): 0.845, -1.482 (0.48), -0.2299, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(13)): 0.845, -1.609 (0.683), -0.2495, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(9)): 0.845, -1.437 (0.549), -0.2229, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(3)): 0.845, -1.675 (0.475), -0.2597, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(8)): 0.845, -1.718 (0.542), -0.2665, 185, 5, 0.282170, 0.393, 8.31e+61
+  (np.int64(25), np.int64(15)): 0.845, -1.224 (0.688), -0.1899, 185, 5, 0.282170, 0.393, 8.31e+61
+Stata logit on the worst cells (drdid: logit trt x [iw = w]); reference ll at its MLE and at Stata's
+  (np.int64(25), np.int64(6)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(10)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(4)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(7)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(1)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(12)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(11)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217
+  (np.int64(25), np.int64(2)): Stata 5 iterations, converged 1, ll -18.02369127; reference ll -18.02369127 at its MLE, -22.97334927 at Stata's; |gradient| 6.3e-13 / 43; max |b diff| 37.3; control odds sum 5.03927 / 10.217

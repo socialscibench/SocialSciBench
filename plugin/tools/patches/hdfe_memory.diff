@@ -1,0 +1,117 @@
+--- frozen/solutions/001/schur-lean/schur_lean.py
++++ engine/core/hdfe_memory.py
+@@ -1,3 +1,5 @@
++# turbo-socialsci core: the frozen SocialSciBench candidate solutions/001/schur-lean (freeze of 2026-10-26)
++# with the plugin's changes (plugin/README.md; diff: plugin/tools/patches/hdfe_memory.diff).
+ """Task 001 candidate "schur-lean": the "schur-cg" computation (OLS with high-dimensional fixed
+ effects and one-way clustered standard errors, as computed by reference.run, reghdfe conventions)
+ organized for a small peak memory.
+@@ -31,6 +33,8 @@
+ 
+ import numpy as np
+ import numba as nb
++
++from ._ols import COLLINEAR_TOL, centered_ss, fit_stats, independent
+ 
+ TOL = 1e-9           # relative residual of the reduced normal equations, per column
+ MAXITER = 100_000
+@@ -495,6 +499,23 @@
+         for k in range(P.shape[1]):
+             if active[k]:
+                 P[r, k] = Z[r, k] + b[k] * P[r, k]
++
++
++ABSORBED = (1e4 * np.finfo(np.float64).eps) ** 2
++
++
++def _absorbed_rhs(B, So, Tb, no_ptr, no_idx, no_cnt):
++    """Plugin addition. A column absorbed by the eliminated fixed effect has a right-hand side
++    B = So - N_ob Tb of rounding residue only (the two terms cancel), which conjugate gradients cannot
++    reduce by tol: it is set to zero, so the column's other coefficients are zero and its demeaned
++    values vanish (the regressor is then dropped as collinear). Residue is judged against the scale
++    of the cancelling terms, |So| + N_ob |Tb|; any column with real variation is far above it."""
++    scale = np.abs(So)
++    _spmm(no_ptr, no_idx, no_cnt, np.abs(Tb), scale, 1.0)
++    noise = ABSORBED * (scale * scale).sum(0)
++    absorbed = (B * B).sum(0) <= noise
++    if absorbed.any():
++        B[:, absorbed] = 0.0
+ 
+ 
+ def _pcg(B, apply_S, precond, tol, maxiter):
+@@ -980,7 +1001,7 @@
+ 
+ # ----------------------------------------------------------------------------------------------
+ 
+-def run(y, X, fe_ids, cluster_ids, tol=1e-8, maxiter=100_000):
++def run(y, X, fe_ids, cluster_ids, tol=1e-8, maxiter=100_000, collinear_tol=COLLINEAR_TOL):
+     y = np.asarray(y, dtype=np.float64)
+     X = np.asarray(X, dtype=np.float64).reshape(len(y), -1)
+     fe_ids = np.asarray(fe_ids).reshape(len(y), -1)
+@@ -1144,7 +1165,10 @@
+             _group_sums_cols(y, X, idx, g_off, g_rows, cols, B)
+             # right-hand side: D_o'V - N_ob C^-1 D_b'V
+             Sb *= cinv[:, None]
++            So = B.copy()
+             _spmm(no_ptr, no_idx, -no_cnt, Sb, B, 1.0)
++            _absorbed_rhs(B, So, Sb, no_ptr, no_idx, no_cnt)
++            del So
+             ao, _ = _pcg(B, apply_S, precond, TOL, MAXITER)
+             del B
+             # eliminated coefficients: C^-1 (D_b'V - N_bo alpha_o)
+@@ -1169,11 +1193,23 @@
+         Wr = Wc[:rows.size]
+         _w_rows(y, X, idx, codes, alpha_b, bcol, alpha_o, ocols, offs, rows, Wr)
+         WW += Wr.T @ Wr
+-    XtX_inv = np.linalg.inv(WW[1:, 1:])
+-    beta = XtX_inv @ WW[1:, 0]
+-    comb = np.concatenate([[1.0], -beta])
++    # Regressors collinear with the fixed effects or with regressors to their left are dropped
++    # (plugin addition); with none dropped, the frozen candidate's operations run unchanged.
++    keep_x = independent(WW[1:, 1:], centered_ss(X, idx), collinear_tol)
++    kept = np.flatnonzero(keep_x)
++    if kept.size == k:
++        XtX_inv = np.linalg.inv(WW[1:, 1:])
++        beta = XtX_inv @ WW[1:, 0]
++        comb = np.concatenate([[1.0], -beta])
++    else:
++        XtX_inv = np.linalg.inv(WW[1:, 1:][np.ix_(kept, kept)]) if kept.size else np.zeros((0, 0))
++        b_kept = XtX_inv @ WW[1:, 0][kept]
++        b_all = np.zeros(k)
++        b_all[kept] = b_kept
++        comb = np.concatenate([[1.0], -b_all])
+     c_off, c_rows = _group_rows(cl, Lc)
+     scores = np.empty((Lc, k))
++    rss = 0.0
+     g0 = 0
+     while g0 < Lc:                                   # clusters whose rows fill about one chunk
+         g1 = int(max(g0 + 1, np.searchsorted(c_off, c_off[g0] + step, side="right") - 1))
+@@ -1183,13 +1219,24 @@
+         Wr = Wc[:rows.size]
+         _w_rows(y, X, idx, codes, alpha_b, bcol, alpha_o, ocols, offs, rows, Wr)
+         e = Wr @ comb
++        rss += float(e @ e)
+         Wr[:, 1:] *= e[:, None]
+         scores[g0:g1] = np.add.reduceat(Wr[:, 1:], c_off[g0:g1] - c_off[g0], axis=0)
+         g0 = g1
+     del Wc
+-    meat = scores.T @ scores
+     df_a = _absorbed_df(codes, L, cl, Lc)
+-    Kdf = k + 1 + df_a
++    Kdf = kept.size + 1 + df_a
+     q = (n - 1) / (n - Kdf) * Lc / (Lc - 1)
+-    vcov = q * XtX_inv @ meat @ XtX_inv
+-    return dict(beta=beta, vcov=vcov, nobs=int(n), df_a=int(df_a), n_clusters=int(Lc))
++    if kept.size == k:
++        meat = scores.T @ scores
++        vcov = q * XtX_inv @ meat @ XtX_inv
++    else:
++        meat = scores[:, kept].T @ scores[:, kept]
++        beta = np.full(k, np.nan)
++        beta[kept] = b_kept
++        vcov = np.full((k, k), np.nan)
++        vcov[np.ix_(kept, kept)] = q * XtX_inv @ meat @ XtX_inv
++    out = dict(beta=beta, vcov=vcov, nobs=int(n), df_a=int(df_a), n_clusters=int(Lc),
++               kept=keep_x, dropped=np.flatnonzero(~keep_x))
++    out.update(fit_stats(rss, y, idx, float(WW[0, 0])))
++    return out

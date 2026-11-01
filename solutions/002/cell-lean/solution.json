@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "name": "cell-lean",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy==2.3.5"
+  ],
+  "description": "Minimal peak memory variant of cell-fused (the same computation, csdid 1.81/2.0.1 rules with every option of the combined task) in NumPy only: per-cohort shared/warm-started Newton fits with row-chunked weighted Gram matrices; a pass over units in blocks of one cohort with 512 KB working matrices, the cells' sums and a small Gram matrix of the aggregate influence functions instead of per-unit arrays; bootstrap in tiles of at most 4 MB of draws with BLAS products and np.partition order statistics; free pages returned to the OS. Threads: BLAS only."
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "stata-csdid",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "pandas",
+    "pystata (Stata 18 MP, external)",
+    "Stata csdid 2.0.0 commit 31a5773 (external)"
+  ],
+  "description": "Stata csdid 2.0.0 (method(dr) nevertreated base_period(varying) analytical pointwise) with estat simple / estat event via pystata in-process, as the 14 Oct 2026 study's Stata extension block."
+}

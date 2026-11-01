@@ -1,0 +1,56 @@
+{
+  "hdfe_speed": {
+    "freeze": "001-schur-cg-t1",
+    "freeze_id": "2d3ae322835b44458e27731d26452d32",
+    "git_commit": "a3809954a9840adfc7e3121b34d8ffa3b13e4c7e",
+    "source": "solutions/001/schur-cg/solution.py",
+    "frozen_sha256": "e86318a7222516fda8540ab372269479f787917612934c6884c13920c25720b3",
+    "sha256": "12c1c7a5a7d2634c938140845e7901189d227c575b062f592f9f731f29727ca4",
+    "modified": true
+  },
+  "hdfe_memory": {
+    "freeze": "001-schur-lean-t1",
+    "freeze_id": "a7e866130d8c4c009ecded1f48dc72c7",
+    "git_commit": "a3809954a9840adfc7e3121b34d8ffa3b13e4c7e",
+    "source": "solutions/001/schur-lean/schur_lean.py",
+    "frozen_sha256": "46862d84022271325b63b01bcd6b0e0dc4184c4d22d0ae4dd7497bbc806fbb33",
+    "sha256": "1913483ad7572062db82506df1a3ef2d3a959249f9e41f62eddfeef94d2a8a39",
+    "modified": true
+  },
+  "did_speed": {
+    "freeze": "002-cell-fused-t1",
+    "freeze_id": "e7ba2e87eb3d4c328b79cec1ddb62aad",
+    "git_commit": "a3809954a9840adfc7e3121b34d8ffa3b13e4c7e",
+    "source": "solutions/002/cell-fused/solution.py",
+    "frozen_sha256": "7794bafcd9e6f051686d2e88e9e44a7b3bc695e88db821622a20fe74cd1104f6",
+    "sha256": "6e9aed9332eeade581cca6869e6acca9612aa6f520e7a4e6d6a575d4c74ccdc2",
+    "modified": true
+  },
+  "did_memory": {
+    "freeze": "002-cell-lean-t1",
+    "freeze_id": "8f1cf32b9d5640de9fdf3b27d7e37326",
+    "git_commit": "a3809954a9840adfc7e3121b34d8ffa3b13e4c7e",
+    "source": "solutions/002/cell-lean/solution.py",
+    "frozen_sha256": "6c68001b7e6d6ff784f8500a26153730a54a31691017aae323f39f7b4a599e1b",
+    "sha256": "f5ad7d7b2d92415254e8366d7c41741a547c332d4862ee1304c82b1bb7e81cd0",
+    "modified": true
+  },
+  "reclink_speed": {
+    "freeze": "003-block-index-t1",
+    "freeze_id": "d1eb246f75254998bddc06ac48a19e49",
+    "git_commit": "a3809954a9840adfc7e3121b34d8ffa3b13e4c7e",
+    "source": "solutions/003/block-index/solution.py",
+    "frozen_sha256": "c82eef69e38c15293773db0cf6d5d15dda78b26b4e78e2fda96777702b8b29b9",
+    "sha256": "098c4e9883410a19cd4155f16a0e43953c258d02b579978a047c6b34269eade5",
+    "modified": true
+  },
+  "reclink_memory": {
+    "freeze": "003-block-lean-t1",
+    "freeze_id": "388bf3149dfa4903b29f37dd5cb3e402",
+    "git_commit": "a3809954a9840adfc7e3121b34d8ffa3b13e4c7e",
+    "source": "solutions/003/block-lean/block_lean.py",
+    "frozen_sha256": "d426dbf5f32c0d0797d84bcff5e528b010b7cd3c41f4e6753df73ffadc5cd652",
+    "sha256": "580b123bfe3877447455af2732fd16ebeddc907cbb252a591b64ce1c41c22735",
+    "modified": true
+  }
+}

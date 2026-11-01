@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "julia-fem",
+  "task": "001",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "juliacall",
+    "Julia 1.13.1 with FixedEffectModels 2.1.0 (external)"
+  ],
+  "description": "Julia 1.13.1 FixedEffectModels 2.1.0 reg (default tolerance) via juliacall in-process, with the study's Julia small-sample correction, as in the 14 Oct 2026 study's Round 2."
+}

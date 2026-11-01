@@ -1,0 +1,1376 @@
+{
+  "schema_version": 1,
+  "retrieved_at": "2026-10-21",
+  "packages": [
+    {
+      "task": "001",
+      "name": "reghdfe_real_data_package",
+      "folder_id": "1x7qpYbZlqefE8fH2353eixlNx5dHW80b"
+    },
+    {
+      "task": "002",
+      "name": "csdid_real_data_package",
+      "folder_id": "1757NAHEygRuPBUx9QOwwGyv_4crOz3-w"
+    },
+    {
+      "task": "003",
+      "name": "reclink_real_data_package",
+      "folder_id": "1v3S43-udGZVQaKkA9i0kYlQ2gY2Gs0Ii",
+      "original_task_id": "008"
+    }
+  ],
+  "files": [
+    {
+      "task": "001",
+      "path": "README.md",
+      "drive_id": "1SZnERyAuh_OkZVNoGXfl-vOIuvdJzwwJ",
+      "size": 34875,
+      "modified_time": "2026-10-21T04:31:40.664Z",
+      "sha256": "a17854f120ca6e3736dde6650a3445a1bc65f13fa89dded7e217c9bb20ec520c"
+    },
+    {
+      "task": "001",
+      "path": "requirements.txt",
+      "drive_id": "1M6zV3yn1W0KIbn5ez6b0bkiUVctl9yPl",
+      "size": 34,
+      "modified_time": "2026-10-21T04:31:40.416Z",
+      "sha256": "d8e5195a9cf4a72bec15cdd2bd4c1691e0ec856858b1a37ccbbdbc4e6fb91065"
+    },
+    {
+      "task": "002",
+      "path": "README.md",
+      "drive_id": "1qmDM6_DN9tuZFfCYGB_8Fwx9KnLpg17Y",
+      "size": 43307,
+      "modified_time": "2026-10-21T04:31:29.664Z",
+      "sha256": "30b3500441df9265fdce26cffb8032429d436e3e1372ba00d029080676e97730"
+    },
+    {
+      "task": "002",
+      "path": "requirements.txt",
+      "drive_id": "1BppG55-vTsskB_TpBfkY79qjvA5paY5t",
+      "size": 48,
+      "modified_time": "2026-10-21T04:31:29.483Z",
+      "sha256": "42b842e4dd4ecbf82d42b702b6c4784cb36183280cfc6385c0b1cd21186b2d95"
+    },
+    {
+      "task": "003",
+      "path": "requirements.txt",
+      "drive_id": "1tewYXbaAwM4J43Te0IW7aw4I0qGF-usL",
+      "size": 43,
+      "modified_time": "2026-10-21T22:24:02.305Z",
+      "sha256": "092822cef19af0a02db9678e7aac1850f8f245f6649f885064f4e033c8305869"
+    },
+    {
+      "task": "003",
+      "path": "README.md",
+      "drive_id": "17tYP0C5VEX3DZn3OFTgeSHwZioeceg0z",
+      "size": 36230,
+      "modified_time": "2026-10-21T22:24:02.297Z",
+      "sha256": "0024e1c7e88e4e74f05952a45bcffeb3f6f6eb8ece64aec37105ea9bf3f51491"
+    },
+    {
+      "task": "001",
+      "path": "build/stage_patentsview.py",
+      "drive_id": "1GnbSmDuEnB84gUj9y4gsivhwBrwpzmO0",
+      "size": 4811,
+      "modified_time": "2026-10-21T04:31:42.518Z",
+      "sha256": "5dac4488f3b51db8679c9a4df4d31efce2a36a2c1f1fa07e2084f7cc009c13ba"
+    },
+    {
+      "task": "001",
+      "path": "build/DATA_LINEAGE.md",
+      "drive_id": "1Eqs6ceKOLOBBynzheOfhRD48lmSe6xSX",
+      "size": 16238,
+      "modified_time": "2026-10-21T04:31:42.251Z",
+      "sha256": "11f41a1bd36f96676471b07023e4962e2e85306c33340a633fb22189034edac1"
+    },
+    {
+      "task": "001",
+      "path": "build/validate_features.py",
+      "drive_id": "1J0ik0A2IYOZJ7cZyzxABZdUeFwhaUOW2",
+      "size": 4760,
+      "modified_time": "2026-10-21T04:31:42.218Z",
+      "sha256": "a8bfb7e8d91f4a691051e59ab8d7f980f943e117c2f4f882e3e23bcda66fdaac"
+    },
+    {
+      "task": "001",
+      "path": "build/build_patentsview.py",
+      "drive_id": "1jGT0JWU7J0lJ-bEvX1hv9HT2oToLI7gL",
+      "size": 36630,
+      "modified_time": "2026-10-21T04:31:41.921Z",
+      "sha256": "a82747015db67513efb7575886f35319ba7a743762a0ea7e80d875e4f4921b40"
+    },
+    {
+      "task": "001",
+      "path": "build/validate_workloads.py",
+      "drive_id": "1HuT3Z0Qatz5iPOYU885s0RQ-8vBsjYci",
+      "size": 3760,
+      "modified_time": "2026-10-21T04:31:41.899Z",
+      "sha256": "7ac41849468b844728f384dc0cd5601f0fa1b87b415e10dc78edfc944fa01272"
+    },
+    {
+      "task": "001",
+      "path": "build/build_sec.py",
+      "drive_id": "1nzLrOzqn46M_8QmCFpfUltOuqx7gf7JN",
+      "size": 14729,
+      "modified_time": "2026-10-21T04:31:41.877Z",
+      "sha256": "558d74b0e1ef60a336bee95b3497cc91b43fbe4600d3be9701115d8a027d9538"
+    },
+    {
+      "task": "001",
+      "path": "build/stage_sec.py",
+      "drive_id": "1K6Q7cC4-ElIFCQUGtan7AdQFsy_Vy3Yt",
+      "size": 2912,
+      "modified_time": "2026-10-21T04:31:41.846Z",
+      "sha256": "ee3f7457fedb86b3161cfde77dcad8918f6b879a2b42f59ca32ca6aeb3e26487"
+    },
+    {
+      "task": "001",
+      "path": "build/README.md",
+      "drive_id": "1pvDo2BNe3k8kscjvXQtbsK_COUgj4430",
+      "size": 3797,
+      "modified_time": "2026-10-21T04:31:41.827Z",
+      "sha256": "48b6a7dfa2e240b4e491e3ce7a750511da9d302ee965d2d6c7e66dca1914fccd"
+    },
+    {
+      "task": "001",
+      "path": "build/download_patentsview.sh",
+      "drive_id": "18PT388S0pxj8114CQ8GTVKr0sDCCFViF",
+      "size": 1616,
+      "modified_time": "2026-10-21T04:31:41.820Z",
+      "sha256": "d3db9e8312dd9c54c583f50a0e3f06befb163369601d6b02c343f1fc2962e45e"
+    },
+    {
+      "task": "001",
+      "path": "code/reference.py",
+      "drive_id": "1oKV8qKy1BV5yNzDNubT6E-aL7MhjxLri",
+      "size": 5292,
+      "modified_time": "2026-10-21T04:31:41.909Z",
+      "sha256": "ee736f78fc0fe068ce0b88ea57ad059771ecc20f804beda2b5020eaa45d7ac71"
+    },
+    {
+      "task": "001",
+      "path": "code/task.md",
+      "drive_id": "1q_ZGvoi1bX_bP8rGmC6HflSxD3aZ-f2d",
+      "size": 7660,
+      "modified_time": "2026-10-21T04:31:41.805Z",
+      "sha256": "dd9404d8c47cce074a8aff0648ca88f4e756ca358a1a062787f2e4415ade0fa4"
+    },
+    {
+      "task": "001",
+      "path": "code/synthetic_extra.py",
+      "drive_id": "11wJSYWXLHkjGotopChwcGS2b_xYRiPAB",
+      "size": 4366,
+      "modified_time": "2026-10-21T04:31:41.796Z",
+      "sha256": "01220301776d0dbadb9b393d3f16e082f5e5bbbc55ad1f8d2ecc8799bc044a3f"
+    },
+    {
+      "task": "001",
+      "path": "code/workloads.py",
+      "drive_id": "1oENlVOlDjkjg4VLojZXE4JvAmC9cFWf3",
+      "size": 5172,
+      "modified_time": "2026-10-21T04:31:41.785Z",
+      "sha256": "f12d9dfd46fd499266e41d036d6b9b554acd95d1e53383eee1959f2f00e3386c"
+    },
+    {
+      "task": "001",
+      "path": "code/realdata.py",
+      "drive_id": "1C-X35JW2Hjyrawm8kZo7hTbsiUbbWwHd",
+      "size": 4634,
+      "modified_time": "2026-10-21T04:31:41.783Z",
+      "sha256": "27276fe7f0bbd0c3003a54607777f30b4f608df776195d07439a9e2c589f73e9"
+    },
+    {
+      "task": "001",
+      "path": "code/example.py",
+      "drive_id": "1ikI5-ik2w16Z5sgFCYBmQytoQ7ks3NXv",
+      "size": 839,
+      "modified_time": "2026-10-21T04:31:41.745Z",
+      "sha256": "30cbbc0b2b68eb21bb9ec9db41544cfd966f835232582b7113159df1593bc675"
+    },
+    {
+      "task": "001",
+      "path": "data/validation.jsonl",
+      "drive_id": "1HrO30QTpt-3IfiWt7ICSNH78PjegIq9r",
+      "size": 7781,
+      "modified_time": "2026-10-21T04:31:42.800Z",
+      "sha256": "ea2dfd18247ef5e918ac0e522d34e6cb8007cb8e72f57626912ed6a073728231"
+    },
+    {
+      "task": "002",
+      "path": "build/build_sec.py",
+      "drive_id": "1hrWNZpKgWuTzQzF3YK4ZMDaWqSRP-PKw",
+      "size": 7091,
+      "modified_time": "2026-10-21T04:31:34.914Z",
+      "sha256": "5f63a335fef21aad6a89a23605624542225fd54d9dfbe235cbd2030e000fab5b"
+    },
+    {
+      "task": "002",
+      "path": "build/build_qcew.py",
+      "drive_id": "1NKMe_3gzywdc6L491AfmRRFPth21-4lG",
+      "size": 9848,
+      "modified_time": "2026-10-21T04:31:32.284Z",
+      "sha256": "ac9fbf0b944e4eaf7e9b3da72b1307e5be2c1eca3305fb3d46e873c5d4765c52"
+    },
+    {
+      "task": "002",
+      "path": "build/build_patentsview.py",
+      "drive_id": "1LqoGjInVA72rsd4Ry-R7SRpDDavL2aBJ",
+      "size": 19552,
+      "modified_time": "2026-10-21T04:31:32.006Z",
+      "sha256": "8f910a0873955f15d7e4710c3279d43c7181ef0be0fcdb485d59e729317b4ec7"
+    },
+    {
+      "task": "002",
+      "path": "build/validate_workloads.py",
+      "drive_id": "1c7ncPTSl-iuqUel58FD8t2jlQymuP-4k",
+      "size": 2787,
+      "modified_time": "2026-10-21T04:31:31.986Z",
+      "sha256": "debe3479f15f931a6cbcf790439203fa25c2da246cba9b14799696782a451697"
+    },
+    {
+      "task": "002",
+      "path": "build/README.md",
+      "drive_id": "1wS2t7C42sE4Ngziy37VRdq2SUz---5u1",
+      "size": 2314,
+      "modified_time": "2026-10-21T04:31:31.970Z",
+      "sha256": "821e6847db6e892fc3a3a8251d2eef0871e0181a1ef4fcf262607929f08b0e85"
+    },
+    {
+      "task": "002",
+      "path": "build/stage_qcew.py",
+      "drive_id": "1Xf27TbEuV6__RPp8J_DyzhrWSQPfytqi",
+      "size": 2764,
+      "modified_time": "2026-10-21T04:31:31.812Z",
+      "sha256": "e517be6149fecd5e015fa9d12963b0f4a198330b93c0a215e44b65d0ef6e34e0"
+    },
+    {
+      "task": "002",
+      "path": "build/DATA_LINEAGE.md",
+      "drive_id": "1V5CN6JdH-5PV1gjAyp4OKiR3g99xYW4-",
+      "size": 14354,
+      "modified_time": "2026-10-21T04:31:31.803Z",
+      "sha256": "62a888bc5f7695f991e21f8cac8acfb2029d4d80e5f2c8ae8564d7a3fcc29167"
+    },
+    {
+      "task": "002",
+      "path": "code/example.py",
+      "drive_id": "1ezgiMFSsOhbGRwXDfzpzLF2wtgOdn6r_",
+      "size": 846,
+      "modified_time": "2026-10-21T04:31:32.617Z",
+      "sha256": "36acf19e0dc225907153c9c039636491da0f53aad44f958220f8d67447ff24b8"
+    },
+    {
+      "task": "002",
+      "path": "code/realdata.py",
+      "drive_id": "1R0YDWYzMKDqDlTRVszg8EbGCNpIkfn2H",
+      "size": 1627,
+      "modified_time": "2026-10-21T04:31:31.894Z",
+      "sha256": "b6ec3acd86abf207f84daac1f10225bf89fde3bd785cd240fe01e4b2137a74e7"
+    },
+    {
+      "task": "002",
+      "path": "code/reference.py",
+      "drive_id": "1n9LUdxugSkwcBIKO33pYFD1SxCiypDVU",
+      "size": 5532,
+      "modified_time": "2026-10-21T04:31:31.855Z",
+      "sha256": "21b0d067079b311e958a15178b1ae11b3c15a8968e6b5819528e20c3bd35ee5e"
+    },
+    {
+      "task": "002",
+      "path": "code/task.json",
+      "drive_id": "1FIic9VigK_pOsG3-gCEDs8CeGCf9xScK",
+      "size": 782,
+      "modified_time": "2026-10-21T04:31:31.844Z",
+      "sha256": "e379fbae2353183bf02650a5d60382043d51044011360cf95a65d1639eb8e258"
+    },
+    {
+      "task": "002",
+      "path": "code/task.md",
+      "drive_id": "1yMTypHaRxZZPo1ledicjXR5A-sG8AnNJ",
+      "size": 7545,
+      "modified_time": "2026-10-21T04:31:31.835Z",
+      "sha256": "8fcca1b78f09cd259bb0879668c9b771cafe262085e213547e9da6374968e6fd"
+    },
+    {
+      "task": "002",
+      "path": "code/workloads.py",
+      "drive_id": "1itsm-lUKVtqJgOEIN2ehHRB-BbqtJxN7",
+      "size": 3383,
+      "modified_time": "2026-10-21T04:31:31.725Z",
+      "sha256": "c02d9790fe45204233a43acfa5b6a407aa79f557a18e1452d6e9cec9d971ff71"
+    },
+    {
+      "task": "002",
+      "path": "data/data_checks.jsonl",
+      "drive_id": "1k_58Zsl6f9pnYRNoPgJ8uwu5sP02oTmH",
+      "size": 3216,
+      "modified_time": "2026-10-21T04:31:32.132Z",
+      "sha256": "07db1be00439d6af757f56637089afde1bc0d07dd4c969ebac59812a5d0e15b5"
+    },
+    {
+      "task": "003",
+      "path": "code/example.py",
+      "drive_id": "1XOe6W5QSyIFr76fwPsyl3mFzAdQeNB4B",
+      "size": 1121,
+      "modified_time": "2026-10-21T22:16:35.213Z",
+      "sha256": "606c7dc1fa58dd42178ea37576ae37866c707d92571506f3fdad51869467e42d"
+    },
+    {
+      "task": "003",
+      "path": "code/realdata.py",
+      "drive_id": "1u3JcYdS2FvgRk6k6evM33ddsigUpCwIE",
+      "size": 1837,
+      "modified_time": "2026-10-21T22:16:35.194Z",
+      "sha256": "36b437776986ce212cd7ea66d5f78cf26f997914d766d04bb66c9a71a8c7e16d"
+    },
+    {
+      "task": "003",
+      "path": "code/workloads.py",
+      "drive_id": "1SZ_rEYDgVUuN5qNrHrfOZxX_pnAw1j-Z",
+      "size": 7918,
+      "modified_time": "2026-10-21T22:10:20.901Z",
+      "sha256": "e45944b8e72e098b27a036d5db988e0022598493c59f580916c3db502b671df4"
+    },
+    {
+      "task": "003",
+      "path": "code/reference.py",
+      "drive_id": "18aevXANdevAnHTL8YJ9-9-8zrWU1jukE",
+      "size": 7719,
+      "modified_time": "2026-10-21T22:10:19.869Z",
+      "sha256": "4d35f1ff81806a3835e8e03ce333fe4c293739842d7b2a1f6db4be8599be9afe"
+    },
+    {
+      "task": "003",
+      "path": "code/task.json",
+      "drive_id": "1HUlahOIn4ZRcWkeI9MYDDyo9UfNfSh-f",
+      "size": 764,
+      "modified_time": "2026-10-21T22:10:19.855Z",
+      "sha256": "e16ebfae707b6d4e06b13a8b94167a9901f528265ae48d27ad4cfaf1a1d87593"
+    },
+    {
+      "task": "003",
+      "path": "code/task.md",
+      "drive_id": "1q4bg_gB3j6UuZMXv-nD_MGz_XQXg29Sm",
+      "size": 10468,
+      "modified_time": "2026-10-21T22:10:19.841Z",
+      "sha256": "79962362e7135432bb2af2030647b4c05b3cb0bb71b704d833964da0e3a283e3"
+    },
+    {
+      "task": "003",
+      "path": "build/README.md",
+      "drive_id": "11wMG6W01z2hOeTClLSHGHisgs-FEVHUj",
+      "size": 2271,
+      "modified_time": "2026-10-21T22:22:58.045Z",
+      "sha256": "843149666f01caaaaba543512320879364c7daf2945e3666ccfed4cee73061bc"
+    },
+    {
+      "task": "003",
+      "path": "build/DATA_LINEAGE.md",
+      "drive_id": "10FatbYJMSxpcc4LX6ZG2FLn6ch4OZG47",
+      "size": 9445,
+      "modified_time": "2026-10-21T22:22:48.235Z",
+      "sha256": "d4117527625aefe9522faa79672a8e6965c1ec4321deabde5f560920a153200c"
+    },
+    {
+      "task": "003",
+      "path": "build/build_workloads.py",
+      "drive_id": "15HT1TxaHhCukw2X8mlan3aESEcJ9vcol",
+      "size": 11384,
+      "modified_time": "2026-10-21T22:21:40.809Z",
+      "sha256": "1bdf04e009e18c287ed6861c2840a2979098525a023f3fbd343fe0c407ab15b3"
+    },
+    {
+      "task": "003",
+      "path": "build/stage_sources.py",
+      "drive_id": "1Xsry6zZrGB0iXF7Qsf94QH-RmytcnbC9",
+      "size": 6410,
+      "modified_time": "2026-10-21T22:20:45.997Z",
+      "sha256": "998523888a300b2941db553294538b50f1da1a4666d3f252bd2d5a016dd85f19"
+    },
+    {
+      "task": "003",
+      "path": "build/candidates.py",
+      "drive_id": "1GwOAsnXUI8M-qwEfrHHHzXpm0QggRt00",
+      "size": 1992,
+      "modified_time": "2026-10-21T22:14:09.234Z",
+      "sha256": "a4b5a8d7d0a7d5416b064f5a778dcbb02571f763d0553bf2bc90fb90b55fd5ad"
+    },
+    {
+      "task": "001",
+      "path": "data/development/108.parquet",
+      "drive_id": "15TV721sdIlmwyNeWPmHTTrkTA_o9KW5O",
+      "size": 40100541,
+      "modified_time": "2026-10-21T04:33:19.017Z",
+      "sha256": "ab700562186e211eb43d7c00ab37689ef5befd28a9c4b44ffdc771da1ded9e7b"
+    },
+    {
+      "task": "001",
+      "path": "data/development/101.parquet",
+      "drive_id": "1Uq-L1DggKkaHbKeBPcpEuSIyscWB6AZh",
+      "size": 2318940,
+      "modified_time": "2026-10-21T04:33:15.036Z",
+      "sha256": "201e4913b9c73bd7edcd8e95c7f6bb9def218c49d3fceb7a07fe6e834b6af787"
+    },
+    {
+      "task": "001",
+      "path": "data/development/102.parquet",
+      "drive_id": "126ZCn5OP13AQ1hEMDYMULialF9tUqK3s",
+      "size": 9803931,
+      "modified_time": "2026-10-21T04:33:13.367Z",
+      "sha256": "b7971b24c3eea3346bf8ce56353eee74d32d1f284324c2c1da8f0993d0a2276b"
+    },
+    {
+      "task": "001",
+      "path": "data/development/103.parquet",
+      "drive_id": "1WPSKxr_vrEvpt9YlOodS4nbxY4hi9f9w",
+      "size": 12457142,
+      "modified_time": "2026-10-21T04:33:11.315Z",
+      "sha256": "f2cc574843642106646248026dea0abbc1bc16a2206ddbf7554cc547ce6198e2"
+    },
+    {
+      "task": "001",
+      "path": "data/development/106.parquet",
+      "drive_id": "18_7-5vJnwJOOI5ARfaSIcEIZhiNRemyo",
+      "size": 2792550,
+      "modified_time": "2026-10-21T04:33:07.805Z",
+      "sha256": "7a09455fca5cda6fc591aad3a7a04e9eb20971c7283254436d5bb321d013b2d0"
+    },
+    {
+      "task": "001",
+      "path": "data/development/107.parquet",
+      "drive_id": "1SVaDBJWZSeQBCtWflzIBFeTkjODgAASX",
+      "size": 12751903,
+      "modified_time": "2026-10-21T04:33:05.653Z",
+      "sha256": "403c610c7eb3608137f7c446d5ad67d70924619dc1cbd2b0541bdd4d79e09030"
+    },
+    {
+      "task": "001",
+      "path": "data/development/105.parquet",
+      "drive_id": "13si0iCz-lSMb9t_tuxsshopGG8n15DUb",
+      "size": 42372117,
+      "modified_time": "2026-10-21T04:33:03.142Z",
+      "sha256": "fa2cc697d94d17c53a9c3e8817ba74460dc28c3d6d529650f5d4fd5f25494fc1"
+    },
+    {
+      "task": "001",
+      "path": "data/development/104.parquet",
+      "drive_id": "1XLl0Gzxh54WE4Ys3kXYIRmrv5O4suJae",
+      "size": 42312752,
+      "modified_time": "2026-10-21T04:32:59.188Z",
+      "sha256": "cfe9ef3d96bd46067948dd434800bc909c0234d49168f5b5ff23ecc4d9052d82"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_106.json",
+      "drive_id": "1WsIgmTe01HinFokJxpJd80OHxz36EyCQ",
+      "size": 576,
+      "modified_time": "2026-10-21T04:31:44.775Z",
+      "sha256": "887b6cc3c57718f0d0e18b4dd4a1ee3cbe9220c5dbfb8b3859012dca428c5192"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_107.json",
+      "drive_id": "1sFUKrxnp2gCIo_WX9PqIBUQ79Lh5RcEb",
+      "size": 555,
+      "modified_time": "2026-10-21T04:31:44.747Z",
+      "sha256": "0afabb317d257ca1607c1419d7ae09170cfba2d1da7b7c435bd443e8741d9c47"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_101.json",
+      "drive_id": "1CZm6bmB1CF_fB-K6jRPP-T27MjaCtFV7",
+      "size": 480,
+      "modified_time": "2026-10-21T04:31:44.475Z",
+      "sha256": "6b7b813274e8b8916ab60484a1e56cccef41a00dbc195c64edad062a550db656"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_102.json",
+      "drive_id": "1RiF-q5KSYQ7Di-kIVScjXliM0ayWJAtE",
+      "size": 472,
+      "modified_time": "2026-10-21T04:31:43.863Z",
+      "sha256": "8c185a8f218bc6bc0a6b812b7947b9d442a31fc48cd05b470ef74ec247c239a7"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_104.json",
+      "drive_id": "1IZyT0gkeLN5P6NXPFUGMzg-bqvZM88hK",
+      "size": 517,
+      "modified_time": "2026-10-21T04:31:43.783Z",
+      "sha256": "43b2140e4ee2786eb290aab65e5e74c916d3d9b9045d10411cb08411623681e2"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_103.json",
+      "drive_id": "1UXuXk4-Q_s_mhUfAA8yf-BAhT-Wu91pX",
+      "size": 472,
+      "modified_time": "2026-10-21T04:31:43.673Z",
+      "sha256": "4541fec3b7ea2f171ba4e53bcdcaa76bbfc35b2bd06cbc141ce1e6479714380a"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_108.json",
+      "drive_id": "1QZHJ0MtcLxXDBqYLo7IkkGwM8sru39B6",
+      "size": 662,
+      "modified_time": "2026-10-21T04:31:43.416Z",
+      "sha256": "711f6aaff11e4f05cb400f809e5d5e31efccb800038ea2c38955399de4a22584"
+    },
+    {
+      "task": "001",
+      "path": "data/development/manifest_105.json",
+      "drive_id": "1xANwU4AsEjWq7Zcm_zgK2ASbu3g29qGT",
+      "size": 541,
+      "modified_time": "2026-10-21T04:31:43.349Z",
+      "sha256": "eef6ebdd978565cc179fa2d04985cd3f3b43573982097c082633fa631225faaa"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/205.parquet",
+      "drive_id": "12wQ9hAWIpx5ncicqGZ5H9AtKDr1OoI9r",
+      "size": 152187589,
+      "modified_time": "2026-10-21T04:32:55.013Z",
+      "sha256": "7fc8f33ce9d7d5f0018e9e94f2706205773c7be175884f406b53ff06ac8b694c"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/204.parquet",
+      "drive_id": "1zNH2tLrhd4BJI1tUjek2XPwI7g_1TjNi",
+      "size": 113820810,
+      "modified_time": "2026-10-21T04:32:44.293Z",
+      "sha256": "500591ac4d7f3219f2ae46e9168a2e6b91e19f55f2d1f12907fbfb86ebfdc5a6"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/206.parquet",
+      "drive_id": "1RMOXobYMI579KsbyKPzDLRMYUovogHLl",
+      "size": 326611417,
+      "modified_time": "2026-10-21T04:32:35.846Z",
+      "sha256": "911fe11007d48cca23dd5a5fce0f6f5142e4b1e78dc62cd70dba6c1cd94320cf"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/304.parquet",
+      "drive_id": "1dvxG7MBpRhequ39-LG_RhFBJj2KfWDoK",
+      "size": 1967859,
+      "modified_time": "2026-10-21T04:32:14.600Z",
+      "sha256": "7b1a5048522f2d31dcb20e0937f259dd5e5f1902ac286fbadc9dfd5cb71a89ac"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/202.parquet",
+      "drive_id": "1F4tqC_M1MjkEzSkC9obpMfa_eXDRz-tP",
+      "size": 171049776,
+      "modified_time": "2026-10-21T04:32:12.914Z",
+      "sha256": "6ddd9e7de12a19e3d12b3005f3b3e4206879f3d424fd5e5375be50b52249e82b"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/301.parquet",
+      "drive_id": "1YC5WMK4rHo4AHTqzNxRcbHLFjYPCR9BL",
+      "size": 13939911,
+      "modified_time": "2026-10-21T04:32:01.337Z",
+      "sha256": "81b7ddf2b90dad6f085973e4245917fd7c615f92d21c0fca3232a054d64372d8"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/203.parquet",
+      "drive_id": "1PW97ibfcmITEag6B9buPwzw_igLKkzcu",
+      "size": 5899060,
+      "modified_time": "2026-10-21T04:31:59.013Z",
+      "sha256": "e52448d21d6b9eb3e60111160d067d6ec67f4cd3d9f9404d527e7262495ed08b"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/302.parquet",
+      "drive_id": "1QrEutOnMNJqUhX85UMgG4v-Oh2D9FglO",
+      "size": 1766988,
+      "modified_time": "2026-10-21T04:31:56.918Z",
+      "sha256": "fbcf04ec6950323405047e6a63bd5c8af4a4ccab03ee5315556644f0c7ce0e7d"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/201.parquet",
+      "drive_id": "1SLD5jFkB22wHWdFrV64UGPUOyXn-AfsO",
+      "size": 171114497,
+      "modified_time": "2026-10-21T04:31:55.147Z",
+      "sha256": "f22bd182b116c8c359213e1af74f29c9908cd8f4b13ba0eaf4413bfb8895e29a"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/303.parquet",
+      "drive_id": "1luHlla5lQTqchF0zHRAoQB5RJLag8309",
+      "size": 15093667,
+      "modified_time": "2026-10-21T04:31:45.133Z",
+      "sha256": "fa8babf642073ff00bc2f6c5728b1361ddbb9e9f7d5e1234b1f84fdb0b9487d7"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_301.json",
+      "drive_id": "1Vb3Ag9_9TlMfbfu0-r8fy68NRB0fT8JD",
+      "size": 454,
+      "modified_time": "2026-10-21T04:31:43.569Z",
+      "sha256": "277259b3835c3b9ed0bf59514ecc4e246b817071c720d5d8d82088055ceeb049"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_204.json",
+      "drive_id": "143-dPH0SEHhRM6JwdQM4kgC5fIv-2BGN",
+      "size": 525,
+      "modified_time": "2026-10-21T04:31:43.550Z",
+      "sha256": "53ad5f6a9c3b1f439e9b5f99ea51d22f283eb3c08e2ef823bb6d35efdcac4831"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_203.json",
+      "drive_id": "13jaKiZ_5wIYWr35TFlMefiAC9kScmE1e",
+      "size": 505,
+      "modified_time": "2026-10-21T04:31:43.545Z",
+      "sha256": "74336ea82bea9031c9c0d62270146343c347a430b85c142b73c474400446f18d"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_303.json",
+      "drive_id": "1yPTTBXZrHxksgUiSakrq1vLpm4XRbprv",
+      "size": 537,
+      "modified_time": "2026-10-21T04:31:43.535Z",
+      "sha256": "564bb5a6bedf4e72f0772838cc76315913f1f55c73363c6e559dd24dbbee4b22"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_205.json",
+      "drive_id": "1-kLWzRP-xVAtBxnaPfuTJRWt1BKOEZVI",
+      "size": 567,
+      "modified_time": "2026-10-21T04:31:43.532Z",
+      "sha256": "ec67a9285056548cc1489809845909ab44a7bc40ad6292eed1e6add07c0f6633"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_302.json",
+      "drive_id": "13mWu36RIYW1tw-vt0xIBdQE21jkDSGke",
+      "size": 547,
+      "modified_time": "2026-10-21T04:31:43.390Z",
+      "sha256": "36510fe38728c23b5dae741cf58556c0d869e6572403ed4e7aa52d17c48c7cd3"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_202.json",
+      "drive_id": "1l-175M3ltiRX_ciX8SHH1cnlH7qRtt02",
+      "size": 492,
+      "modified_time": "2026-10-21T04:31:43.373Z",
+      "sha256": "3929f1443720744be2e9e52edf2a5710f3c62c3698f65c7687e9bc9f4c787a1c"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_206.json",
+      "drive_id": "1mRSCBo0vu_NWSj9aCVnfcqTmdoSCyJA5",
+      "size": 523,
+      "modified_time": "2026-10-21T04:31:43.334Z",
+      "sha256": "be92080db7bb0ebfeeb350063253a4cfc82938155b9abf740885da7061fb3350"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_201.json",
+      "drive_id": "1xofuS6S0lhQACTVRr1vlb4ny-majAlFj",
+      "size": 468,
+      "modified_time": "2026-10-21T04:31:43.316Z",
+      "sha256": "2477afc2b09d23d20e969c81f40bb879b7a7610d5d41fd630f9b4af4b98a056c"
+    },
+    {
+      "task": "001",
+      "path": "data/heldout/manifest_304.json",
+      "drive_id": "1FEWcbrnyAoKWNs5xT1K-5Zhisu-ais6M",
+      "size": 667,
+      "modified_time": "2026-10-21T04:31:43.285Z",
+      "sha256": "37c90d1ed2cf823ffba6e1792820d1f005ff6ce346560f0bf5f8563d660abf5a"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/304.npz",
+      "drive_id": "1jg6IW1YNj8TQvHof3S9L0jD-RvYB-HUw",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:45.913Z",
+      "sha256": "3270f77603978b6660c3d6a3adc7c0468e9576be9da3333aae95ce930decaaa9"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/105.npz",
+      "drive_id": "15f6eJ2A8IdBKmSofjBHR635k24309l3r",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:45.859Z",
+      "sha256": "03d41dcb867949c931a8bca728326beddab45a2c1d16336363941d6756b012c6"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/103.npz",
+      "drive_id": "1jzRLMyDbFAw0j0inU2eWMNzkQmNgPvHb",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:45.816Z",
+      "sha256": "194143c71aaecf408b86de5850537413b72887831c548a07666c9888ccbd1479"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/108.npz",
+      "drive_id": "1OkbGFqA1-8AZBaMIehxyMh69fFZ7rxDM",
+      "size": 8698,
+      "modified_time": "2026-10-21T04:31:45.791Z",
+      "sha256": "a455403c85639d55e66996dcc96d4e820725ff532e2453284c425292146bb469"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/301.npz",
+      "drive_id": "1mL1JoGshyOxvIFx2_lAb-IHnJizt_SXE",
+      "size": 2506,
+      "modified_time": "2026-10-21T04:31:45.746Z",
+      "sha256": "4155df2c292dd54c85316ec77d230429221081d5d8ebbfca2b173d9e59b50599"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/104.npz",
+      "drive_id": "14e8YmtYW-xXsGWKvGoLLBv5ndVPz-kVz",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:45.704Z",
+      "sha256": "4f69a9994ab6b66717cbcd3876aaf845c50b3829e1c5d52d0e0fb2031f1e23ba"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/106.npz",
+      "drive_id": "1v0fBI99hoUuCTyjrVA0MIhYH0v4S-JE-",
+      "size": 3178,
+      "modified_time": "2026-10-21T04:31:45.688Z",
+      "sha256": "513fc7c07d303567bee7459505179c6a439d0acb07b46fd1722f828ffe386287"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/109.npz",
+      "drive_id": "1JbD5gI4W_423hk4ArXzdbvX7qj_XDJpZ",
+      "size": 2506,
+      "modified_time": "2026-10-21T04:31:45.359Z",
+      "sha256": "cdc9ca4408679ddcb6191019e8e534b068cfd217fdb00951a77f7c6d3234a0ef"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/102.npz",
+      "drive_id": "1ucyamewt8oYOgXZcyEbM7PdqE3UrIxyd",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:45.217Z",
+      "sha256": "3d5a9aba8776847e3a958e3494c38ef124b6a1541dd1010a09b467b2f5f64913"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/107.npz",
+      "drive_id": "1ZeZDTSKmJeGooxIIvZycRs2ImrBIvztU",
+      "size": 2138,
+      "modified_time": "2026-10-21T04:31:45.010Z",
+      "sha256": "c251fac469072e39e7dccc65401fe06c78ccf944baac7b1e37a871359bf832cb"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/303.npz",
+      "drive_id": "18VKCOKaPhSfbGrxPFBne0YBK0-EOtBOQ",
+      "size": 2138,
+      "modified_time": "2026-10-21T04:31:44.968Z",
+      "sha256": "bae0d2492ddb657bcf74e63d24d9619df4eafd8464e7fecdac2c288e3102a59c"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/302.npz",
+      "drive_id": "123wI4Xs7XOGdZYmznYYQDVKGOLQxrk4C",
+      "size": 2138,
+      "modified_time": "2026-10-21T04:31:44.934Z",
+      "sha256": "9fa402777665f5746fad43edaf4925b4290e7ef089a733360149820e3c8eefda"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/201.npz",
+      "drive_id": "1DaHSpiuov9i4RQwC4phheXJpNsWsLbht",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:44.868Z",
+      "sha256": "6fbdbf3d886b87957636117bb767fa3b2a7ebbb3a0058842de5646b15a136f0d"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/202.npz",
+      "drive_id": "15hvlIFQSYB5LTGlZznmW0tJkUiwxpBz9",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:44.714Z",
+      "sha256": "841bcb5fba0d6b088b62edcb06923d14d93ccb7543ae32f9c6c2cfe88a44b728"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/101.npz",
+      "drive_id": "12tgIAG6Pozg_NgLzH3Ehyh4PvfelY-rm",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:44.710Z",
+      "sha256": "0a1f2c8b9dcb62a837cd3a8ba00e60624aa4c9de3be41f99be9d1a28d18a24c5"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/204.npz",
+      "drive_id": "1MtJp8VCiFoit0zQWn_U8xfS78Wqzbj-y",
+      "size": 2138,
+      "modified_time": "2026-10-21T04:31:44.691Z",
+      "sha256": "edad9187722157ab2c90e1c9f0bc27756eef8881d5df0af9f79655fcefdcfc86"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/205.npz",
+      "drive_id": "1OX7r5bgIvQwoe92CarufuakVrYLHNVvg",
+      "size": 8698,
+      "modified_time": "2026-10-21T04:31:44.664Z",
+      "sha256": "e118341d406d27c3277d327054ffae858aba32196228935ed64b736bd5cd3f36"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/206.npz",
+      "drive_id": "1IUgjVhT35DCjOnIH7noYkOWezuc4WBBg",
+      "size": 4618,
+      "modified_time": "2026-10-21T04:31:44.619Z",
+      "sha256": "54b9f829d46ad4f8a46828229c39a591d0175c48025e3b3338cccf5faee3b2be"
+    },
+    {
+      "task": "001",
+      "path": "data/reference_outputs/203.npz",
+      "drive_id": "1mIoag2_FNx0eHsUWUelU_3M-YJBUjHMF",
+      "size": 3178,
+      "modified_time": "2026-10-21T04:31:44.580Z",
+      "sha256": "39ed54d243762d6f2245742cb75585b2f77c59660a039872469324076a515272"
+    },
+    {
+      "task": "002",
+      "path": "data/development/107.parquet",
+      "drive_id": "1goDHbKlNgId2Tx5O3KpncrTJaWm6DJ5t",
+      "size": 1665137,
+      "modified_time": "2026-10-21T04:31:42.675Z",
+      "sha256": "cd2e0f6ad382f50186ff172c1669a38784fff63f74228c0f4a016d8e44a598bd"
+    },
+    {
+      "task": "002",
+      "path": "data/development/104.parquet",
+      "drive_id": "1eT8m9aVH-wDVVMweqncUjb-1ByUqqRFT",
+      "size": 4053171,
+      "modified_time": "2026-10-21T04:31:40.940Z",
+      "sha256": "67604b7b46dfaae41a4e685b96c6c292224d208df95fc257a0494151db447b4b"
+    },
+    {
+      "task": "002",
+      "path": "data/development/108.parquet",
+      "drive_id": "1vKMYuOV5NGKDYwfPySXi7p4ESmwH0aYU",
+      "size": 53984,
+      "modified_time": "2026-10-21T04:31:35.464Z",
+      "sha256": "2bf775503f12207dbdbbd962d281f31ff3d613267eab8370fb1a03bf7cdd659b"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_107.json",
+      "drive_id": "14sPGH-uLXFwzetfc7SGQZXRH0gs1K2Ry",
+      "size": 954,
+      "modified_time": "2026-10-21T04:31:35.103Z",
+      "sha256": "d117bc3f7808e0ba42b0d1b3ff01d40c6d91800c015de5e0c0192f8ca7edb050"
+    },
+    {
+      "task": "002",
+      "path": "data/development/101.parquet",
+      "drive_id": "1GYbf2NV1SU0NbjjQuQRrrx-aWcZwyvr5",
+      "size": 186054,
+      "modified_time": "2026-10-21T04:31:35.051Z",
+      "sha256": "648570d7531962ce42d1976ee93d5dea458047be9af6d59d26b25163cfe9cf25"
+    },
+    {
+      "task": "002",
+      "path": "data/development/102.parquet",
+      "drive_id": "1jWQpSZQI-EMPferLqRvdXKJdP69tSsVe",
+      "size": 168179,
+      "modified_time": "2026-10-21T04:31:35.045Z",
+      "sha256": "00fb7ff3bf76624ce5f96c9d451900ebec86c32bd5882c1e822ffa0f5d5821d6"
+    },
+    {
+      "task": "002",
+      "path": "data/development/103.parquet",
+      "drive_id": "1vgXBrqAnqoe0cK4VysnBeG4vSRyzox63",
+      "size": 965761,
+      "modified_time": "2026-10-21T04:31:34.957Z",
+      "sha256": "11e39d487e3321286635f8ddbc9fb5c07719554d92da5846f1d84a4ae4d01da8"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_103.json",
+      "drive_id": "13Y-uWelSOejOcqzUx0KLzQT1BJREC7Oa",
+      "size": 1050,
+      "modified_time": "2026-10-21T04:31:34.884Z",
+      "sha256": "61c517ab0f3d0368fc84ae01dbc3148c4ed63236f00fe867ba960226ae99d9ed"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_102.json",
+      "drive_id": "1AMEdWces4f5eunq2Dl6Rl873MHDysJ7p",
+      "size": 888,
+      "modified_time": "2026-10-21T04:31:34.865Z",
+      "sha256": "d7cd8e8522209cb447dae9a432bcb28d6f805a91eb2e55950435e4b0b82f1556"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_108.json",
+      "drive_id": "1JS4r2QPalL7JtfzwrNeS9IpwMpfLDW2_",
+      "size": 932,
+      "modified_time": "2026-10-21T04:31:34.836Z",
+      "sha256": "77634229499c26dfbd434187744240220cd6ed7f8463f94c07ceea4787fbcba7"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_101.json",
+      "drive_id": "1TAn3gmg3n4Xtnd-GPVtq88iqD1dJg1Sf",
+      "size": 950,
+      "modified_time": "2026-10-21T04:31:34.798Z",
+      "sha256": "0db0e45a26cbb20a32ae4bffb08dd7138d2a87960cf85617be6048c544a663d8"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_104.json",
+      "drive_id": "1WyD3bSWucqp0W2tgqcMbLbT_B7dV-jce",
+      "size": 964,
+      "modified_time": "2026-10-21T04:31:34.757Z",
+      "sha256": "945cac1c8d77844343dd21ce87fdcad747a0550568dbefa67ab8e208def7e5e6"
+    },
+    {
+      "task": "002",
+      "path": "data/development/105.parquet",
+      "drive_id": "1xqGDQ7zZsJcilQ8Pnl6pPLM7Y6tHChoc",
+      "size": 853230,
+      "modified_time": "2026-10-21T04:31:34.252Z",
+      "sha256": "e29478fc584c5eac83a771ce88d167a69b30c96d029b2c235e15f423e74718c0"
+    },
+    {
+      "task": "002",
+      "path": "data/development/manifest_105.json",
+      "drive_id": "1rlu6PBdSFbqp7TQwSRNG7rGqSSdE-APc",
+      "size": 899,
+      "modified_time": "2026-10-21T04:31:33.886Z",
+      "sha256": "43d5a700d6bbcdd07ef867ff115cdbde65750ed3cbc24290d6dd74ace00d1435"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/403.parquet",
+      "drive_id": "1Zhaj_frY87cx83tnoP3UTrOebIQ8s7wT",
+      "size": 9290897,
+      "modified_time": "2026-10-21T04:31:38.576Z",
+      "sha256": "db68a4d064f6936f9253638b42090b66535683352c87df96a81083a761bfd5fe"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_201.json",
+      "drive_id": "1omM5xRqiTMH7BWsj2juzK9elX-ME1t5L",
+      "size": 953,
+      "modified_time": "2026-10-21T04:31:37.158Z",
+      "sha256": "6d27600dd8c5666c281cb8379d351a3f691a08cb222442cd472b309b127b4d38"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/402.parquet",
+      "drive_id": "1p58-0B9JZ5Cuh9Z7PtTMmsR3oS9jm2SG",
+      "size": 2208088,
+      "modified_time": "2026-10-21T04:31:36.034Z",
+      "sha256": "85c93beebdc1f2128f1f7fe317fb1ce94f47e0101a7cd59d81cc5d97e62d743f"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_402.json",
+      "drive_id": "1bGIZI10Mac4JzjtHqrU1MDJ9Q-87eXBX",
+      "size": 1096,
+      "modified_time": "2026-10-21T04:31:33.930Z",
+      "sha256": "3320c70b5886d858da66036ac07bd320856e0f74a8bd53c947b6dd47478dfd80"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/201.parquet",
+      "drive_id": "1qGOA3Jj72BVU6Q6JyFBeLze0M0JIGjtO",
+      "size": 1939223,
+      "modified_time": "2026-10-21T04:31:33.901Z",
+      "sha256": "f6408a429b97d4e807fc644f134720fef8c060c4acb0a8de5ced4df228fcdf01"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_203.json",
+      "drive_id": "1EpH8hsj0mG3xFCodag6qWQWYw86M5j3c",
+      "size": 881,
+      "modified_time": "2026-10-21T04:31:33.855Z",
+      "sha256": "2ba26f3b99abb0c8d957039742321abe2fb75568b803aacc23f36883d92ee5c3"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/301.parquet",
+      "drive_id": "1kKNhRmWZfBUSle4ukneo5y_OLvmvRX9b",
+      "size": 160686,
+      "modified_time": "2026-10-21T04:31:33.711Z",
+      "sha256": "9fe230c44fb7096bb16ade797a1c5479941b09f55ec65a43719169ab1119fd9e"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/203.parquet",
+      "drive_id": "1yOAekouci7HJvuJa0KZrP5mA8gqoG2Tv",
+      "size": 86095,
+      "modified_time": "2026-10-21T04:31:33.557Z",
+      "sha256": "d5acdd843309ccfbdd0dbebf58df87fb1c8a8540b4d9fd473586e55929e1af72"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_401.json",
+      "drive_id": "1ZMJGBB1TX9Nly6I9V_axfZ4Vpkbb0EmS",
+      "size": 1085,
+      "modified_time": "2026-10-21T04:31:33.545Z",
+      "sha256": "e20b63a9ee85560ab4fdceeb891ab1742dd7b22ba2cfda33bf4cb5f77e9280c1"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_403.json",
+      "drive_id": "1heeZy3cfigXVZoWmmSodCGHn-MKkOTck",
+      "size": 1134,
+      "modified_time": "2026-10-21T04:31:33.438Z",
+      "sha256": "a8e505d0795ad12b6a1760e703c29ca8f8bd0151a47cbaa687d6899a22935c48"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_202.json",
+      "drive_id": "1MywVBDvmIVAaVdj84Ky7m6RNYM9OWu16",
+      "size": 896,
+      "modified_time": "2026-10-21T04:31:33.435Z",
+      "sha256": "5d74872ea2eb070d468105300110cb307bb545a3aa02182bd07d383efd546062"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/manifest_301.json",
+      "drive_id": "1HFrH9MObzNmJrRPtffMZ2kkvv5t0DhNA",
+      "size": 981,
+      "modified_time": "2026-10-21T04:31:33.433Z",
+      "sha256": "611aae6289a1428989e187348323e7a8a7db3015e54a2818c66867fb7c106770"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/401.parquet",
+      "drive_id": "1IinxJEvscHh_KX6tpPNWeiLHfaBf3n80",
+      "size": 218611,
+      "modified_time": "2026-10-21T04:31:33.405Z",
+      "sha256": "de37dbdc5966524d1710078955b90497a32eec9196c3eb7a75beb4a7ddbdce4c"
+    },
+    {
+      "task": "002",
+      "path": "data/heldout/202.parquet",
+      "drive_id": "1sdEwI8l3RVlpAgJ9ZScgPT_5cXRqyu9p",
+      "size": 569937,
+      "modified_time": "2026-10-21T04:31:33.339Z",
+      "sha256": "8d2313d6082de6535c968f00362374c7524aeedb751918580d541067902c3407"
+    },
+    {
+      "task": "003",
+      "path": "data/development/103_using.parquet",
+      "drive_id": "1HuVr9YP2n9auu3CwuJmXVwyoEU6A4mbk",
+      "size": 2468972,
+      "modified_time": "2026-10-21T22:22:12.838Z",
+      "sha256": "df037c0e60c9c2e6b26cb3d6b98e80937bcb2913bced32d13d257f4bad87a7b2"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_106.json",
+      "drive_id": "1AT1O51gIutY3fRQ53o-94ttyTeRZr9gD",
+      "size": 1091,
+      "modified_time": "2026-10-21T22:22:12.838Z",
+      "sha256": "0a22b8d652c741df87d3289f1ebd6567e342576a0594e00df800b80e8b219410"
+    },
+    {
+      "task": "003",
+      "path": "data/development/107_using.parquet",
+      "drive_id": "1_KnPVuLHsgfUxHMJYJM5vWTBOVCSqIEA",
+      "size": 4078513,
+      "modified_time": "2026-10-21T22:22:12.834Z",
+      "sha256": "b0da7425c14d306a6c46dae4dfa20c7f45333ae84bd066dfd43a8a8d008b88c9"
+    },
+    {
+      "task": "003",
+      "path": "data/development/104_using.parquet",
+      "drive_id": "1Ra_qYtosjP8lxd1SG6zmRDhSzoCl6eUu",
+      "size": 11355226,
+      "modified_time": "2026-10-21T22:22:12.821Z",
+      "sha256": "8811e3774fce5dcfc45bd9d9b0a0bf4249f8fb1ecf98e2ed1272fab3c7a97688"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_107.json",
+      "drive_id": "1hhPZ9NcWSgzJ0o1kcTeT1QAnonEXrJyL",
+      "size": 1126,
+      "modified_time": "2026-10-21T22:22:12.796Z",
+      "sha256": "da959645b3135ef2a86240a1cdb274ae8403fff57965675ab4ce77b9b51e75ef"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_101.json",
+      "drive_id": "17rwO7F0-PDwwqs7ZOC65CKxPOS7Q6rFN",
+      "size": 1061,
+      "modified_time": "2026-10-21T22:22:12.795Z",
+      "sha256": "9728eefacc200d4f442aa461c55f9e1868eac977ef2e906caee77d65c97fc515"
+    },
+    {
+      "task": "003",
+      "path": "data/development/108_using.parquet",
+      "drive_id": "1euVGcZ4MrO5ECKh762zDiYUCM7stfJ1p",
+      "size": 237172669,
+      "modified_time": "2026-10-21T22:22:12.793Z",
+      "sha256": "4d6ed49e088c47256d8ee4f0899d5b384f99840a9eb0913bc6ef7a742c0b2e6b"
+    },
+    {
+      "task": "003",
+      "path": "data/development/107_master.parquet",
+      "drive_id": "1wHJa6slL6Mn62v7oeOljKAGrOExJUTd6",
+      "size": 53699,
+      "modified_time": "2026-10-21T22:22:12.434Z",
+      "sha256": "c6d28e3340e7bc016844eccfce31c06cea4fdb244ee8db001bc82d8e6760ffce"
+    },
+    {
+      "task": "003",
+      "path": "data/development/108_master.parquet",
+      "drive_id": "16c_AY9m5M5YSy2jBNLWc9ABd8gzblmKa",
+      "size": 168691,
+      "modified_time": "2026-10-21T22:22:12.434Z",
+      "sha256": "dd64bf6e3f40a908ff74b7a408388a70f82f1e46d1054fb8a03da20435be3bcd"
+    },
+    {
+      "task": "003",
+      "path": "data/development/101_master.parquet",
+      "drive_id": "1MfOOOB1hKTijeZanrBkM5L7ClTHd9fBk",
+      "size": 57329,
+      "modified_time": "2026-10-21T22:22:12.433Z",
+      "sha256": "439de81a475d4682bd18551fbf7e839f907a0fc3de41bd3c20d6e92c6b9bb9a5"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_102.json",
+      "drive_id": "1WhBeCJE3JWy_-zgJHk1fxUB5v_q-1ReM",
+      "size": 1050,
+      "modified_time": "2026-10-21T22:22:12.433Z",
+      "sha256": "3dc199bd1463787a26015677a10332a687b79f0e23b65070a74da4198e03ce80"
+    },
+    {
+      "task": "003",
+      "path": "data/development/106_master.parquet",
+      "drive_id": "1Dw8rLOjDQEIoHWCG6-EYjhSpngFjhI4h",
+      "size": 98088,
+      "modified_time": "2026-10-21T22:22:12.432Z",
+      "sha256": "50c782b6d0622828e8ea6a85f3e7889cde4b1f7105de1104b739f1ecca0fe942"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_103.json",
+      "drive_id": "1ep9XVQ2G4dZsCFGJRcQO4A9zSK3ccVgC",
+      "size": 1070,
+      "modified_time": "2026-10-21T22:22:12.432Z",
+      "sha256": "688c108d8138e0aaf63905f8b80480645a3ab364e71cc17f356f5adfee348efb"
+    },
+    {
+      "task": "003",
+      "path": "data/development/104_master.parquet",
+      "drive_id": "15Z1nMN9PczNsSso-NmE2Z_kpFSf1Yr69",
+      "size": 14824,
+      "modified_time": "2026-10-21T22:22:12.431Z",
+      "sha256": "235afaabf2d934086f4f29f4e0f1e6e082ebcf762159a1c47020822931fe8563"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_104.json",
+      "drive_id": "1zPOsicmA_zCxXV8YetFP7pwp1p06tjLe",
+      "size": 1056,
+      "modified_time": "2026-10-21T22:22:12.430Z",
+      "sha256": "372366a0e5a858711aa22b70f862c2ce2505b1a0574e116a0ec47b3a5d5f7eda"
+    },
+    {
+      "task": "003",
+      "path": "data/development/105_using.parquet",
+      "drive_id": "1vWspCowvhn-z8OAVC5-ungxemhw9gcM7",
+      "size": 4394137,
+      "modified_time": "2026-10-21T22:22:12.429Z",
+      "sha256": "121ff8c73bdb53d768939ef7b40ef2ea80712ae3b7473017d113cff299f8f67d"
+    },
+    {
+      "task": "003",
+      "path": "data/development/101_using.parquet",
+      "drive_id": "1iJmjmT-f6yjiNIpPpnAqa2WYjgJZjQVv",
+      "size": 2134524,
+      "modified_time": "2026-10-21T22:22:12.421Z",
+      "sha256": "d78f664c33b1fd2aed06cc83f58de7f3957d7e263009f0e8d291b71b2c29bfd9"
+    },
+    {
+      "task": "003",
+      "path": "data/development/103_master.parquet",
+      "drive_id": "1tAxb9rM1RlhOnboiYNwLVPGdJOTU7wwG",
+      "size": 340584,
+      "modified_time": "2026-10-21T22:22:12.416Z",
+      "sha256": "186fc794cce16d6c506fa4a0247ee7f2386e797280ba2afe7abb1e54dade09d2"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_108.json",
+      "drive_id": "1UO_HvTnRmUTtCGrMFyf6uZMe_Rou59Bk",
+      "size": 1058,
+      "modified_time": "2026-10-21T22:22:12.415Z",
+      "sha256": "b9bc8ab48b31e9e6ac499e189978be64008e2624d3a9df030ecf8123e7a4de9f"
+    },
+    {
+      "task": "003",
+      "path": "data/development/102_master.parquet",
+      "drive_id": "16odS2BAqyIOnTBSwC4nIo7Os1WNtxIt7",
+      "size": 146594,
+      "modified_time": "2026-10-21T22:22:12.414Z",
+      "sha256": "21c07aa79c75f46b23899fe56735041533c6004f08dce04a314df4436a5f977f"
+    },
+    {
+      "task": "003",
+      "path": "data/development/106_using.parquet",
+      "drive_id": "1bJ9mbx3gnmaBDBLVRfn-3vx-gD0bLX03",
+      "size": 394572,
+      "modified_time": "2026-10-21T22:22:12.412Z",
+      "sha256": "e4de0ae0590b7a470622c216b7948d35e0a468d526a1a74c0537d3a2c89186dc"
+    },
+    {
+      "task": "003",
+      "path": "data/development/105_master.parquet",
+      "drive_id": "1A7Nnf1_WXEwjWD1AD96gQECNwZX_udkZ",
+      "size": 54918,
+      "modified_time": "2026-10-21T22:22:12.411Z",
+      "sha256": "98a70a3645efd6ade37550b0d94eeb09fa9a7e79d2a3c1531f6c0adbe5bad5d4"
+    },
+    {
+      "task": "003",
+      "path": "data/development/102_using.parquet",
+      "drive_id": "1FAMVExyaESU_i03K53r3cOKHjJKUueiZ",
+      "size": 394572,
+      "modified_time": "2026-10-21T22:22:12.410Z",
+      "sha256": "e4de0ae0590b7a470622c216b7948d35e0a468d526a1a74c0537d3a2c89186dc"
+    },
+    {
+      "task": "003",
+      "path": "data/development/manifest_105.json",
+      "drive_id": "1KHf49WOg7If9UyO8jIsFvJ9tF-LjE6WI",
+      "size": 1129,
+      "modified_time": "2026-10-21T22:22:12.410Z",
+      "sha256": "a539276cde9fc0031d86154382ec00b33031129e74cd18fc33c0aa3ff933a905"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/203_master.parquet",
+      "drive_id": "1ctmclSk6OGOXBWbt4aTqcjU3GPWXctDV",
+      "size": 56728,
+      "modified_time": "2026-10-21T22:22:13.174Z",
+      "sha256": "2578f30cd2e01b3a5621a0545d113602c3060149cd9937d52f894687448306cb"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/manifest_203.json",
+      "drive_id": "1AwtepTR79YqEOzazJueNltUx0rJ00fpX",
+      "size": 1100,
+      "modified_time": "2026-10-21T22:22:13.170Z",
+      "sha256": "3114233ed5353ab406b931df0deb610b2ca9fe017ccf43e81047d181a3cd557c"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/204_master.parquet",
+      "drive_id": "11fZFO8hjqYnlizh9x83N9FZpZmNcNUM8",
+      "size": 42931,
+      "modified_time": "2026-10-21T22:22:13.169Z",
+      "sha256": "dc70ef4fc2b7aed26d8dcc70216ac8abfe14b645516510c29373c035a6b6e10e"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/205_master.parquet",
+      "drive_id": "1IfJAcQ9RVA8zGTFamhKjpLa38Zn233t2",
+      "size": 177450,
+      "modified_time": "2026-10-21T22:22:13.167Z",
+      "sha256": "1daf5e70967a4c2a54aa59130ca2b2d278127a5d1558257e02e07402d711fe44"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/manifest_202.json",
+      "drive_id": "1_J_6_VUop6VQoKU2BdsXrQPr_vu3jxml",
+      "size": 1060,
+      "modified_time": "2026-10-21T22:22:13.166Z",
+      "sha256": "d03d5ea8adc38150a07d06cf1098b65387b4b673b035a91529746f60383950b8"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/202_master.parquet",
+      "drive_id": "1v-7dxfc9QUuYBNjFVnXCmHMCqdniNT01",
+      "size": 15412,
+      "modified_time": "2026-10-21T22:22:13.164Z",
+      "sha256": "fb1643a220a704930bd8b125b5e933b8f55fe0b7493a08c50985a793ae4c647c"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/202_using.parquet",
+      "drive_id": "13Hm2TyHmO40bgGWjhWT6WTxgZFo-o_QX",
+      "size": 8782881,
+      "modified_time": "2026-10-21T22:22:13.163Z",
+      "sha256": "5f9eeab5745fc22bfd2815a2727e858712b46482d163203b0a4dcba1acd4a6cf"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/manifest_205.json",
+      "drive_id": "1waMPArsbUvNkJoNzM65ZGAwE0A8MfLeN",
+      "size": 1074,
+      "modified_time": "2026-10-21T22:22:13.141Z",
+      "sha256": "d0bd68d94a9cf373d1bab993af96cd2924c70478e8730d1de0f7128af61169fe"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/201_using.parquet",
+      "drive_id": "12-snzZRZ8XuK52UinVJ8SfQopYmJmZxf",
+      "size": 5183677,
+      "modified_time": "2026-10-21T22:22:13.139Z",
+      "sha256": "f4eb3fd7f49b7b4f3cb8ef0dc608a84074a560a13aa2651b617bed1d459981be"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/manifest_204.json",
+      "drive_id": "1TNNlW4sbPwypD85PPfZKA180TPVWCiAs",
+      "size": 1139,
+      "modified_time": "2026-10-21T22:22:13.127Z",
+      "sha256": "3b503540dbcf0803c1e46f680a1b88cb6aac392ff20e3462268348e21f8acc97"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/205_using.parquet",
+      "drive_id": "1QVjqGs0liL_lFRDWpG-yj3gB2a4haPwT",
+      "size": 129903076,
+      "modified_time": "2026-10-21T22:22:13.126Z",
+      "sha256": "e0d30ddc611221219bea253843e3307174998e6e88e6887cff6e654a93bfd5a3"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/201_master.parquet",
+      "drive_id": "1d5c538g49LMjEMdgaBxrjVI2zul9ywS4",
+      "size": 64644,
+      "modified_time": "2026-10-21T22:22:12.862Z",
+      "sha256": "7fba70d9cbe46abbd9f1f30e21b5d4a2de35da2053aff71387b0496bb7fa4acf"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/204_using.parquet",
+      "drive_id": "1CZlXAXfO-V5J6yUoda_PAlzOmYyhhp_Y",
+      "size": 2208397,
+      "modified_time": "2026-10-21T22:22:12.859Z",
+      "sha256": "9b4004aed3a31ff2b49e0bb3a27e8c97123215f2b01893f71e7ff7beda58dcdc"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/203_using.parquet",
+      "drive_id": "1zIjOr3CwadIfgbo4eDP5i_F1mDjj995h",
+      "size": 2219273,
+      "modified_time": "2026-10-21T22:22:12.846Z",
+      "sha256": "553b91d2e871f393acaf4be8a44ce45c4f66fc13958afc0e06ac5a7cd93149a8"
+    },
+    {
+      "task": "003",
+      "path": "data/heldout/manifest_201.json",
+      "drive_id": "1xBhcoNlzQi0G4KjToV14yRNDd8ZXKGLd",
+      "size": 1101,
+      "modified_time": "2026-10-21T22:22:12.839Z",
+      "sha256": "2d7240b82355ad9f6e283ea81cf59209bff862dd94873602b4b07120006bcbfe"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "contract_version": 2,
+  "id": "002",
+  "directory": "002_csdid",
+  "prompt_files": [
+    "task.md",
+    "reference.py",
+    "workloads.py",
+    "task.json",
+    "realdata.py",
+    "real_workloads.json",
+    "DATA.md"
+  ],
+  "reference_entry_point": "reference.py::run",
+  "workload_entry_point": "workloads.py::generate",
+  "workload_catalog": "workloads.py::WORKLOADS",
+  "validator": "harness.validation::validate",
+  "adapter": "harness.cases::generate_inputs",
+  "tolerances": {
+    "relative_floor": 1e-12,
+    "estimate_rtol": 1e-06,
+    "estimate_scale": "max(|reference|, its reference SE)",
+    "se_rtol": 0.0001,
+    "bootstrap_rtol": 0.0001,
+    "crit_rtol": 0.0001,
+    "cov_rtol": 0.0001
+  },
+  "default_workload_ids": [
+    1
+  ],
+  "input_policy": "read_only",
+  "timing": "wall-clock run call; host-ready outputs; synchronization included; setup (data loading, multiplier generation) and validation excluded",
+  "development_entry_point": "harness.cases::development_cases",
+  "realdata_entry_point": "realdata.py::load",
+  "real_workload_catalog": "real_workloads.json",
+  "headline_workloads": [
+    107,
+    402
+  ],
+  "options": {
+    "control": [
+      "never",
+      "notyet"
+    ],
+    "method": [
+      "dripw",
+      "reg",
+      "stdipw",
+      "ipw",
+      "drimp"
+    ],
+    "base_period": [
+      "varying",
+      "universal"
+    ],
+    "trim": "float, 1.0 = none",
+    "boot_weights": "[n_units, B] int8 +1/-1 or None",
+    "alpha": 0.05,
+    "event_sets": "list of event-time lists or None",
+    "rules": [
+      "csdid181",
+      "csdid201"
+    ],
+    "covariates": "[n_units, k] or [n_units, n_periods, k]",
+    "weights": "[n_units] or None",
+    "panel": "unbalanced allowed (NaN in y)"
+  },
+  "stata_targets": {
+    "csdid181": "csdid 1.81 (SSC), drdid 1.91",
+    "csdid201": "csdid 2.0.1 (commit f98bcea), pair balancing"
+  },
+  "note": "The combined task (the former tasks 002, 002b and 002c), from the real-data package's author."
+}

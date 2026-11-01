@@ -1,0 +1,19 @@
+# Environment of the evaluator runs (solutions/.venv): CPython 3.12.13 (Homebrew), macOS 15.7.3 x86_64.
+# Candidate imports: numpy, numba (llvmlite). The reference and harness use scipy, pandas, pyarrow, threadpoolctl.
+# Generated with: uv pip freeze --python solutions/.venv/bin/python (2026-10-22); pytest and its
+# dependencies are present for the repository tests only.
+iniconfig==2.3.1
+llvmlite==0.45.1
+numba==0.62.1
+numpy==2.3.5
+packaging==26.3
+pandas==3.0.6
+pluggy==1.7.0
+pyarrow==26.0.0
+pygments==2.21.0
+pytest==9.1.1
+python-dateutil==3.0.0
+scipy==1.18.1
+six==1.17.0
+threadpoolctl==3.7.0
+tzdata==2026.5

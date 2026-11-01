@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "name": "fastdid-r",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "rpy2==3.6.9",
+    "numpy==2.3.5",
+    "R 4.5.3 (conda-forge)",
+    "fastdid==1.0.6 (CRAN)",
+    "r-data.table==1.18.6.1"
+  ],
+  "description": "Baseline: R fastdid (control_type dr, never-treated, varying base period) via rpy2, one call for group-time/event-study results and one for the simple ATT. No propensity-score trimming. Threads: data.table."
+}

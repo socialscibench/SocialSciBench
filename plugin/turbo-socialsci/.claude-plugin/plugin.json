@@ -1,0 +1,8 @@
+{
+  "name": "turbo-socialsci",
+  "version": "0.2.0",
+  "description": "Fast, exact reghdfe-, csdid- and reclink2-style computations for agents: fixed-effects regressions with clustered SEs, Callaway-Sant'Anna staggered DiD, and name-and-address record linkage.",
+  "author": {
+    "name": "SocialSciBench authors"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "moderndid",
+  "task": "002",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy",
+    "pandas",
+    "moderndid==0.2.0"
+  ],
+  "description": "ModernDiD 0.2.0 att_gt (dr, never-treated, varying base) and aggte, as the 14 Oct 2026 study's moderndid engine."
+}

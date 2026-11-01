@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "stata-csdid2-fra",
+  "task": "002b",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "Stata 18 MP (pystata)",
+    "csdid2 1.3",
+    "numpy==2.3.5",
+    "pandas==3.0.6"
+  ],
+  "description": "Baseline: Stata csdid2 1.3 with the task's options and short (csdid's varying base period), estat attgt, simple, group, calendar and event within the window, via pystata; long panel with one row per observed unit-period passed as a temporary .dta file; no ipw. Threads: Stata MP set processors."
+}

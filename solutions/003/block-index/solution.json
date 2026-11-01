@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "block-index",
+  "task": "003",
+  "entry_point": "solution.py::run",
+  "sources": [
+    "solution.py"
+  ],
+  "artifacts": [
+    "research.md",
+    "requirements.lock",
+    "build.md",
+    "fuzz.py"
+  ],
+  "target_hardware": "cpu",
+  "dependencies": [
+    "numpy==2.3.5",
+    "numba==0.62.1"
+  ],
+  "description": "Master-only dictionaries (8-character hashing, prefix filter) for lookups and perfect matches; city blocks with inverted bigram lists (or direct counting for blocks with few masters); vectorized exact float32 scoring chain with an approximate cube-root bonus and exact rescoring of near-best candidates. Threads: NUMBA_NUM_THREADS."
+}

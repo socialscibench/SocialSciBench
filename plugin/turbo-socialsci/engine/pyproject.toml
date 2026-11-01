@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "turbo-socialsci"
+version = "0.2.0"
+description = "Fast, exact reghdfe-, csdid- and reclink2-style computations (SocialSciBench tasks 001-003)"
+requires-python = ">=3.12,<3.14"
+# the versions the cores were validated with (SocialSciBench study of 2026-10-25)
+dependencies = [
+    "numpy==2.3.5",
+    "numba==0.62.1",
+    "llvmlite==0.45.1",
+    "scipy==1.18.1",
+    "threadpoolctl==3.7.0",
+    "pandas>=2.2",
+    "pyarrow>=16",
+]
+
+[project.scripts]
+turbo-socialsci = "turbo_socialsci.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+turbo_socialsci = ["core/PROVENANCE.json"]

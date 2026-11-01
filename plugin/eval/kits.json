@@ -1,0 +1,21 @@
+{
+  "storage": "~/SocialSciBench-kits",
+  "runs_root": "/Users/Shared/turbo-socialsci-runs",
+  "plugin_copy": "/Users/Shared/turbo-socialsci-plugin",
+  "kits": {
+    "001": {
+      "title": "Kelly, Papanikolaou, Seru and Taddy (2021), Table A.2 columns 1, 7, 8 (reghdfe)",
+      "note": null
+    },
+    "002": {
+      "title": "Baker, Callaway, Cunningham, Goodman-Bacon and Sant'Anna (2025), seven csdid calls",
+      "note": "Clarification from the task maintainer: the doubly robust method in this task is csdid's default doubly robust estimator, dripw (a weighted logit for the propensity score with weighted least squares for the outcome regression; Sant'Anna and Zhao 2020)."
+    },
+    "003": {
+      "title": "DCA to Capital IQ record linkage (reclink2)",
+      "note": null
+    }
+  },
+  "prompt": "Complete the task described in task/TASK.md, using the data in data/. Work in this directory: write every deliverable the task asks for (results files, the code and the hardware note) here. This machine has 6 CPU cores; run the timed estimations with 4 threads. You have up to 2 hours.",
+  "folders_file": "~/SocialSciBench-kits/drive-folders.json"
+}
